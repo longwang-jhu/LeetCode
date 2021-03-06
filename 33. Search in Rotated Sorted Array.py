@@ -1,4 +1,5 @@
 # binary search: [first part | second part]
+# determine which part mid is in
 
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
