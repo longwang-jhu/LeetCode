@@ -6,52 +6,35 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # reverse a ListNode
-    # def reverse(self, head: ListNode, tail: ListNode):
-    #     ptrTailNext = tail.next
-    #     ptrHead = head
-    #     while ptrTailNext != tail: # 1(head) -> 2 -> 3 -> 4(tail) -> (tailNext)
-    #         ptrHeadNext = ptrHead.next # 1(head) -> 2(headNext) -> 3 -> 4(tail) -> (tailNext)
-    #         ptrHead.next = ptrTailNext # 2(headNext) -> 3 -> 4(tail) -> (tailNext) <- 1(head)
-    #         ptrTailNext = ptrHead # 2(headNext) -> 3 -> 4(tail) -> 1(head) -> (tailNext) 
-    #         ptrHead = ptrHeadNext # 2(head) -> 3 -> 4(tail) -> 1(head) -> (tailNext) 
-    #     return tail, head
-    
-    def reverse(self, head: ListNode, tail: ListNode):
-        # 0 -> 1(head) -> 2 -> 3(tail) -> tailNext
-        dummyHead = ListNode(0)
-        dummyHead.next = head
-        tailNext = tail.next
-        
-        prev = dummyHead
-        curr = dummyHead.next
-        while curr != tailNext:
-            temp = curr.next # None(prev) -> 1(curr) -> 2(temp) -> 3 -> None
-            curr.next = prev # None(prev) <- 1(curr)   2(temp) -> 3 -> None
-            prev = curr
-            curr = temp # None <- 1(prev)   2(curr) -> 3 -> None
+    def reverse(self, head, tail):
+        prev, curr = None, head
+        while prev != tail:
+            next = curr.next # prev -> curr -> next
+            curr.next = prev
+            prev, curr = curr, next # move on
         return tail, head
 
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
-        dummyHead = ListNode(0)
-        dummyHead.next = head
-        ptrCurr = dummyHead
+        dummy_head = ListNode(None)
+        dummy_head.next = head
+        prev = dummy_head
 
-        while head:
-            tail = ptrCurr
+        while prev.next:
+            tail = prev
             for i in range(k): # move tail for k steps
                 tail = tail.next
-                if not tail: # reach the end
-                    return dummyHead.next
+                if not tail: # reach end: tail == None
+                    return dummy_head.next
             
-            ptrTailNext = tail.next # (curr) -> head -> ... -> tail -> (tailNext)
-            
+            next = tail.next # prev -> head -> ... -> tail -> next
+            print("head, tail value", head.val, tail.val)
             head, tail = self.reverse(head, tail)
-            # reconnect
-            ptrCurr.next = head
-            tail.next = ptrTailNext
-            # move ptrCurr and head
-            ptrCurr = tail
-            head = ptrCurr.next
+            
+            # reconnect prev -> head -> ... -> tail -> next
+            prev.next = head
+            tail.next = next
+
+            # move prev and head
+            prev, head = tail, next
         
-        return dummyHead.next
+        return dummy_head.next
