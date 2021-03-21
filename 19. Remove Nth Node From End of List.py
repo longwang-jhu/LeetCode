@@ -1,5 +1,4 @@
-# two passes: find length first
-# one pass: two pointers that n apart
+# use slow and fast
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -8,42 +7,19 @@
 #         self.next = next
 class Solution:
     def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
-#         # two passes
-#         # find length first
-#         length = 0
-#         curr = head
-#         while curr:
-#             curr = curr.next
-#             length += 1
-
-#         # use a dummy Head
-#         dummyHead = ListNode(0)
-#         dummyHead.next = head
-#         curr = dummyHead
-#         while length > n:
-#             curr = curr.next
-#             length -= 1
-        
-#         curr.next = curr.next.next
-#         return dummyHead.next
-    
         # one pass
-        dummyHead = ListNode(0)
-        dummyHead.next = head
-        fast = dummyHead
-        slow = dummyHead
+        dummy = ListNode()
+        dummy.next = head
+        slow, fast = dummy, dummy
         
-        # move fast first n time
-        i = 0
-        while i < n:
+        # move fast n time
+        for _ in range(n):
             fast = fast.next
-            i += 1
         
-        # move fast and slow the same time
-        while fast.next:
-            fast = fast.next
+        # move fast and slow together
+        while fast.next: # stop at fast = tail
             slow = slow.next
+            fast = fast.next
         
-        slow.next = slow.next.next
-        return dummyHead.next
-        
+        slow.next = slow.next.next # skip the desire node
+        return dummy.next

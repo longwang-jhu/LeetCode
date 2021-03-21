@@ -1,4 +1,5 @@
-# method 1: use priority queue, time complexity: O(N log_k)
+# use priority queue
+# time comp: O(n logk)
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -7,24 +8,26 @@
 #         self.next = next
 
 from queue import PriorityQueue
+
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:      
-        dummyHead = ListNode(0)
-        ptr = dummyHead
+        dummy = ListNode()
+        curr = dummy
+        pq = PriorityQueue()
         
-        q = PriorityQueue()
-        for idx, l in enumerate(lists):
-            if l:
-                q.put((l.val, idx, l)) # put every list into the queue, use idx to avoid duplicates
+        # put every list into the queue, use idx to avoid tie of head.val
+        for idx, head in enumerate(lists):
+            if head:
+                pq.put((head.val, idx, head))
         
-        while not q.empty():
-            val, idx, l = q.get() # get the smallest value
-            ptr.next = ListNode(val)
-            ptr = ptr.next
+        while not pq.empty():
+            val, idx, head = pq.get() # get the smallest value
+            curr.next = head
+            curr = curr.next
             
             # move to the next value and put it into the queue
-            l = l.next
-            if l:
-                q.put((l.val, idx, l))
+            head = head.next
+            if head:
+                pq.put((head.val, idx, head))
         
-        return dummyHead.next
+        return dummy.next

@@ -1,4 +1,4 @@
-# use dummyHead and a pointer
+# use dummy and curr
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -7,22 +7,21 @@
 #         self.next = next
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        dummyHead = ListNode(0)
-        curr = dummyHead
+        dummy = ListNode()
+        curr = dummy
         
         while l1 and l2:
-            v1 = l1.val
-            v2 = l2.val
-            
-            if v1 < v2:
-                curr.next = ListNode(v1)
+            if l1.val < l2.val:
+                curr.next = l1
                 l1 = l1.next
             else:
-                curr.next = ListNode(v2)
+                curr.next = l2
                 l2 = l2.next
             curr = curr.next
         
-        if l1: curr.next = l1
-        if l2: curr.next = l2
+        if l1:
+            curr.next = l1
+        if l2:
+            curr.next = l2
         
-        return dummyHead.next
+        return dummy.next
