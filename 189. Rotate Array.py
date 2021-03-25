@@ -1,3 +1,12 @@
+# https://leetcode.com/problems/rotate-array/
+
+# Given an array, rotate the array to the right by k steps, where k is non-
+# negative.
+
+# Follow up:
+
+###############################################################################
+
 # reverse all -> reverse first k -> reverse last n - k
 
 class Solution:

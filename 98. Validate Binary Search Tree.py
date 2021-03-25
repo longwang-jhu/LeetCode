@@ -1,3 +1,12 @@
+# https://leetcode.com/problems/validate-binary-search-tree/
+
+# Given the root of a binary tree, determine if it is a valid binary search
+# tree (BST).
+
+# A valid BST is defined as follows:
+
+###############################################################################
+
 # divide and conquer, record (is_valid, min_val, max_val)
 
 # Definition for a binary tree node.

@@ -1,3 +1,10 @@
+# https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+# Given a string s, find the length of the longest substring without repeating
+# characters.
+
+###############################################################################
+
 # use charDict[char] = idx
 # reset startIdx if necessary
 # keep updating maxLen
@@ -13,12 +20,12 @@ class Solution:
                 if prevCharIdx + 1 > startIdx: # reset startIdx if necessary
                     # set the start idx to the right of the repeated char
                     startIdx = prevCharIdx + 1
-
+                
             # update maxLen
             currLen = idx - startIdx + 1
             maxLen = max(currLen, maxLen)
-
+            
             # save char into charDict
             charDict[char] = idx
-
+        
         return maxLen

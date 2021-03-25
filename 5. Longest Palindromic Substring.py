@@ -1,3 +1,9 @@
+# https://leetcode.com/problems/longest-palindromic-substring/
+
+# Given a string s, return the longest palindromic substring in s.
+
+###############################################################################
+
 # check length by expanding around center
 # two cases: start with "A" or "AB"
 

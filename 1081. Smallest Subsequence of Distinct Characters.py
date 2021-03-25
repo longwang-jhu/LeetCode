@@ -1,3 +1,13 @@
+# https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/
+
+# Return the lexicographically smallest subsequence of s that contains all the
+# distinct characters of s exactly once.
+
+# Note: This question is the same as 316: https://leetcode.com/problems/remove-
+# duplicate-letters/
+
+###############################################################################
+
 # record last postion of each char
 # use stack and pop previous chars when i) new char is smaller and ii) we can add the popped char back later
 

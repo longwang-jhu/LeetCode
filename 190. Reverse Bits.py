@@ -1,3 +1,15 @@
+# https://leetcode.com/problems/reverse-bits/
+
+# Reverse bits of a given 32 bits unsigned integer.
+
+# Note:
+
+# Follow up:
+
+# If this function is called many times, how would you optimize it?
+
+###############################################################################
+
 # get the right-most bit by n % 2 or n & 1
 # 2**1 + 2**2 is bit OR operation 2**1 | 2**2 
 
@@ -11,4 +23,3 @@ class Solution:
             n = n >> 1 # remove the right-most bit
             pow_idx -= 1
         return ans
-        

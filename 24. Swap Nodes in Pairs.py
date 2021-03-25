@@ -1,3 +1,9 @@
+# https://leetcode.com/problems/swap-nodes-in-pairs/
+
+# Given a linked list, swap every two adjacent nodes and return its head.
+
+###############################################################################
+
 # use ptrCurr, ptrSwap, ptrSwap1, ptrSwap2
 
 # Definition for singly-linked list.

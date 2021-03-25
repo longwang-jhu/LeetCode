@@ -1,3 +1,15 @@
+# https://leetcode.com/problems/next-permutation/
+
+# Implement next permutation, which rearranges numbers into the
+# lexicographically next greater permutation of numbers.
+
+# If such an arrangement is not possible, it must rearrange it as the lowest
+# possible order (i.e., sorted in ascending order).
+
+# The replacement must be in place and use only constant extra memory.
+
+###############################################################################
+
 # find first a[i-1] < a[i] from right: 1, 2*, 5*, 4, 3
 # swap a[i-1] with its next larger number after it: 1, 3*, 5, 4, 2*
 # reverse numbers after a[i-1]: 1, 3, 2*, 4*, 5*

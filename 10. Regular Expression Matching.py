@@ -1,3 +1,12 @@
+# https://leetcode.com/problems/regular-expression-matching/
+
+# Given an input string (s) and a pattern (p), implement regular expression
+# matching with support for '.' and '*' where:
+
+# The matching should cover the entire input string (not partial).
+
+###############################################################################
+
 # dp[i,j] = isMatch(first i chars in s, first j chars in p)
 # get dp[i,j] by checking p[j-1]
 

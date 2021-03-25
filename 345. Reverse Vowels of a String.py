@@ -1,3 +1,16 @@
+# https://leetcode.com/problems/reverse-vowels-of-a-string/
+
+# Write a function that takes a string as input and reverse only the vowels of
+# a string.
+
+# Example 1:
+
+# Example 2:
+
+# Note: The vowels does not include the letter "y".
+
+###############################################################################
+
 # use left and right
 
 class Solution:

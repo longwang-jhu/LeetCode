@@ -1,3 +1,10 @@
+# https://leetcode.com/problems/binary-tree-level-order-traversal/
+
+# Given the root of a binary tree, return the level order traversal of its
+# nodes' values. (i.e., from left to right, level by level).
+
+###############################################################################
+
 # use deque
 
 # Definition for a binary tree node.
@@ -19,7 +26,7 @@ class Solution:
         while queue:
             level = []
             size = len(queue)
-            for i in range(size):
+            for _ in range(size):
                 # append current node to level
                 node = queue.popleft()
                 level.append(node.val)

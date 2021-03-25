@@ -1,3 +1,15 @@
+# https://leetcode.com/problems/reverse-substrings-between-each-pair-of-parentheses/
+
+# You are given a string s that consists of lower case English letters and
+# brackets.
+
+# Reverse the strings in each pair of matching parentheses, starting from the
+# innermost one.
+
+# Your result should not contain any brackets.
+
+###############################################################################
+
 # method 1: use stack to store every word between () and reverse it when encounter ')'
 # method 2: use Dict to store all paired () and travel as wormhole =>(<- ... <=)->
 

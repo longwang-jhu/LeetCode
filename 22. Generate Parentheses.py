@@ -1,19 +1,26 @@
+# https://leetcode.com/problems/generate-parentheses/
+
+# Given n pairs of parentheses, write a function to generate all combinations
+# of well-formed parentheses.
+
+###############################################################################
+
 # dfs(comb, leftP, rightP), exits when leftP == n and rightP == n
 
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        res = []
-        def dfs(comb, leftP, rightP):
-            if leftP == n and rightP == n: # exit case
-                res.append(comb)
-                return
-            if leftP < n:
-                dfs(comb + "(", leftP + 1, rightP)
-            if rightP < leftP: # can only add ")" when there are more "("
-                dfs(comb + ")", leftP, rightP + 1)
+#         res = []
+#         def dfs(comb, leftP, rightP):
+#             if leftP == n and rightP == n: # exit case
+#                 res.append(comb)
+#                 return
+#             if leftP < n:
+#                 dfs(comb + "(", leftP + 1, rightP)
+#             if rightP < leftP: # can only add ")" when there are more "("
+#                 dfs(comb + ")", leftP, rightP + 1)
         
-        dfs("", 0, 0)
-        return res
+#         dfs("", 0, 0)
+#         return res
     
         res = []
         comb = []

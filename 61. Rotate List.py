@@ -1,3 +1,9 @@
+# https://leetcode.com/problems/rotate-list/
+
+# Given the head of a linked list, rotate the list to the right by k places.
+
+###############################################################################
+
 # find length, then the new head
 
 # Definition for singly-linked list.
