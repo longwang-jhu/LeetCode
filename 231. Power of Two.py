@@ -8,7 +8,7 @@
 
 ###############################################################################
 
-# n & n-1 gives the last bit
+# n & n-1
 
 class Solution:
     def isPowerOfTwo(self, n: int) -> bool:

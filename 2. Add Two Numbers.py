@@ -10,7 +10,9 @@
 
 ###############################################################################
 
-# use dummyHead and carry
+# linked list -> simple traverse
+
+# use dummy and carry
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -20,8 +22,8 @@
 
 class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        dummyHead = ListNode(0) # use a dummy head
-        curr = dummyHead
+        dummy = ListNode() # use a dummy head
+        curr = dummy
         carry = 0
         
         while l1 or l2 or carry:
@@ -35,4 +37,4 @@ class Solution:
             l1 = l1.next if l1 else None
             l2 = l2.next if l2 else None
         
-        return dummyHead.next
+        return dummy.next

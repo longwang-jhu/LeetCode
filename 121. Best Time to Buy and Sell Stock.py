@@ -11,16 +11,16 @@
 
 ###############################################################################
 
-# one pass: set min_price = price if it lower, otherwise consider it as sell price
+# one-pass: maintain min_price, consider all price as sell price
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
+        if not prices or len(prices) <= 1: return 0
+        
         max_profit = 0
-        min_price = 2 ** 31 - 1
-        for price in prices:
-            if price < min_price: # buy
-                min_price = price
-            elif price - min_price > max_profit: # sell
-                max_profit = price - min_price
-                
+        min_price = prices[0]
+
+        for i in range(1, len(prices)):
+            max_profit = max(max_profit, prices[i] - min_price) # consider as sell price
+            min_price = min(min_price, prices[i]) # update min_price
         return max_profit
