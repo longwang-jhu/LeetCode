@@ -7,22 +7,25 @@
 
 ###############################################################################
 
-# make a tracker list and pop the last element if there is a match
+# new ele must match most recent one -> stack
 
 class Solution:
     def isValid(self, s: str) -> bool:
-        tracker = []
+        if not s or len(s) == 0: return True
+        if len(s) == 1: return False
+        
+        stack = []
         for char in s:
             if char in ['(', '[', '{']:
-                tracker.append(char)
-            elif len(tracker) == 0:
+                stack.append(char)
+            elif not stack: # no match for ')', ']', '}'
                 return False
-            elif char == ')' and tracker[-1] != '(':
+            elif char == ')' and stack[-1] != '(':
                 return False
-            elif char == ']' and tracker[-1] != '[':
+            elif char == ']' and stack[-1] != '[':
                 return False
-            elif char == '}' and tracker[-1] != '{':
+            elif char == '}' and stack[-1] != '{':
                 return False
             else:
-                tracker.pop()
-        return len(tracker) == 0
+                stack.pop()
+        return True if not stack else False

@@ -10,24 +10,26 @@
 
 ###############################################################################
 
-# dfs: sort first, add child from start to end
-# avoid duplicate: add child if first child OR != prev child
+# all unique combos -> sort and dfs
+# avoid duplicate: add child if first child or != prev child
 
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         candidates.sort()
         ans = []
-        self.dfs(ans, 0, [], candidates, target)
+        self.dfs(ans, [], 0, candidates, target)
         return ans
     
-    def dfs(self, ans, start, holder, candidates, remain):
+    def dfs(self, ans, holder, start_idx, candidates, remain):
         if remain < 0:
             return
         if remain == 0:
             ans.append(holder.copy())
+            return
         
-        for i in range(start, len(candidates)):
-            if i == start or candidates[i] != candidates[i-1]: # avoid duplicates
+        for i in range(start_idx, len(candidates)):
+            if i == start_idx or candidates[i] != candidates[i-1]: # avoid duplicate
                 holder.append(candidates[i])
-                self.dfs(ans, i + 1, holder, candidates, remain - candidates[i]) # use i + 1 since cannot reuse, set remain = remain - number
+                # use i + 1 since cannot reuse, set remain = remain - number
+                self.dfs(ans, holder, i + 1, candidates, remain - candidates[i])
                 holder.pop()

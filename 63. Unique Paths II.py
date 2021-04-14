@@ -14,13 +14,15 @@
 
 ###############################################################################
 
-# dp[m][n] = unique path to reach (m,n)
+# curr depends on prev -> dp
+# dp[m][n] = unique path to reach (m, n)
 
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
-        m, n = len(obstacleGrid), len(obstacleGrid[0])       
+        if not obstacleGrid: return 0
         
-        dp = [[0 for _ in range(n)] for _ in range(m)]
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        dp = [[0] * n for _ in range(m)]
         
         # initialize
         if obstacleGrid[0][0] == 1:
@@ -28,21 +30,19 @@ class Solution:
         else:
             dp[0][0] = 1
 
-        # initialize first column
-        for i in range(1,m):
+        for i in range(1,m): # first column
             if obstacleGrid[i][0] == 1:
                 dp[i][0] = 0
             else:
                 dp[i][0] = dp[i-1][0]
                 
-        # initialize first row
-        for j in range(1,n):
+        for j in range(1,n): # first row
             if obstacleGrid[0][j] == 1:
                 dp[0][j] = 0
             else:
                 dp[0][j] = dp[0][j-1]
         
-        # loop over each row
+        # loop over row and column
         for i in range(1,m):
             for j in range(1,n):
                 if obstacleGrid[i][j] == 1:

@@ -10,8 +10,7 @@
 
 ###############################################################################
 
-# linked list -> simple traverse
-
+# linked list -> simple traversal
 # use dummy and carry
 
 # Definition for singly-linked list.

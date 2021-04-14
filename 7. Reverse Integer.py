@@ -9,33 +9,27 @@
 
 ###############################################################################
 
-# range = [-2147483648, 2147483647]
+# reverse num -> get last digit -> divmod -> check overflow
 # convert to abs(x) first
+# range = [-2147483648, 2147483647]
 
 class Solution:
     def reverse(self, x: int) -> int:
-        INT_MAX = 2 ** 31 - 1
-        INT_MIN = - 2 ** 31
+        INT_MIN, INT_MAX = -2 ** 31, 2 ** 31 - 1
+        if x == INT_MIN or x == INT_MAX: return 0 # overflow
+        if x == 0: return 0
         
-        # convert x to abs(x)
-        # Note that abs(INT_MIN) and reverse of INT_MIN will overflow
-        if x == INT_MIN:
-            return 0
-        
-        xAbs = abs(x)
-        xRev = 0
-        
-        while xAbs != 0:
-            xAbs, digitLast = divmod(xAbs, 10)
+        # convert x to abs(x) first
+        x_abs = abs(x)
+        x_rev = 0
+        while x_abs != 0:
+            x_abs, last_digit = divmod(x_abs, 10)
 
             # check overflow
-            if (xRev > INT_MAX // 10) or (xRev == INT_MAX // 10 and digitLast > 7):
-                return 0
+            if x_rev > INT_MAX // 10 or (x_rev == INT_MAX // 10 and last_digit > 7):
+                return 0 # overflow
             else:
-                xRev = xRev * 10 + digitLast
+                x_rev = x_rev * 10 + last_digit
         
-        # assign negative sign if necessary
-        if x < 0:
-            xRev = -xRev
-        
-        return xRev
+        # put sign back
+        return x_rev if x > 0 else -x_rev

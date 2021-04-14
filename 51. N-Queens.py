@@ -11,10 +11,8 @@
 
 ###############################################################################
 
-# dfs(row), place queen at each row
-# place queen, update free position
-# generate child for every col and (row, col) is free
-# remove queen, update free position
+# all unique sol -> dfs -> place queen by row
+# keep updating free position
 
 # diag: (2n + 1) lines, row + col = i if (row, col) on diag[i], counting from top-left
 # anti-diag: (2n + 1) lines, row - col + n - 1 = i if (row, col) on diag[i], counting from top-right
@@ -27,10 +25,10 @@ class Solution:
         diag_free = [True] * (2 * n - 1)
         anti_diag_free = [True] * (2 * n - 1)
         
-        self.dfs(ans, 0, [], n, col_free, diag_free, anti_diag_free)
+        self.dfs(ans, [], 0, n, col_free, diag_free, anti_diag_free)
         return ans
     
-    def dfs(self, ans, row, holder, n, col_free, diag_free, anti_diag_free):
+    def dfs(self, ans, holder, row, n, col_free, diag_free, anti_diag_free):
         if row == n:
             ans.append(holder.copy())
             return
@@ -48,7 +46,7 @@ class Solution:
                 anti_diag_free[row - col + n - 1] = False
                                 
                 # go to child
-                self.dfs(ans, row + 1, holder, n, col_free, diag_free, anti_diag_free)
+                self.dfs(ans, holder, row + 1, n, col_free, diag_free, anti_diag_free)
                 
                 # remove queen
                 holder.pop()

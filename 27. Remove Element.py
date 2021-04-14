@@ -20,13 +20,18 @@
 
 ###############################################################################
 
-# use a slow idx and modify nums[slowIdx] on the go
+# in-place remove -> slow and fast ptrs
+
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        slowIdx = 0
-        for i in range(len(nums)):
-            if nums[i] != val:
-                nums[slowIdx] = nums[i]
-                slowIdx += 1
-        return slowIdx
+        if not nums or len(nums) == 0: return 0
+        if len(nums) == 1: return 0 if nums[0] == val else 1
+        
+        slow = fast = 0
+        while fast < len(nums):
+            if nums[fast] != val:
+                nums[slow] = nums[fast]
+                slow += 1 # only increase when different
+            fast += 1
+        return slow
                 

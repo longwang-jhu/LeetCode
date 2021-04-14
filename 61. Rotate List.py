@@ -4,7 +4,7 @@
 
 ###############################################################################
 
-# find length, then the new head
+# SLL -> forward traversal -> find length -> find new head
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -13,21 +13,20 @@
 #         self.next = next
 class Solution:
     def rotateRight(self, head: ListNode, k: int) -> ListNode:
-        if head == None:
-            return
+        if not head or not head.next: return head
         
         # find length first
         length = 1
         curr = head       
-        while curr.next != None:
+        while curr.next != None: # stop at curr = tail
             curr = curr.next
             length += 1
-        
-        # find new head
-        k = k % length
         curr.next = head # cycle the list
-        curr = curr.next
-        for _ in range(length - k - 1): # stop right before the head
+        
+        # find new_head
+        k = k % length
+        curr = head
+        for _ in range(length - k - 1): # stop at curr -> new_head -> ...
             curr = curr.next
         
         head = curr.next

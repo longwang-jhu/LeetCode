@@ -5,8 +5,8 @@
 
 ###############################################################################
 
-# convert num to cum_sum (conver price_change to price)
-# recall stoack trading problem
+# nums -> prefix_sums
+# track min_val and update max_sum
 
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:

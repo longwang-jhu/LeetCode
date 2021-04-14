@@ -5,9 +5,9 @@
 
 ###############################################################################
 
-# dfs: sort first, add all unused as child
-# use is_used = [] to record if child has been used or not
-# avoid duplicate: i) not used AND ii) i == 0 OR (!= prev) OR (== prev, but prev is used)
+# all unique combos -> sort, dfs -> add child that is not used
+# is_used = [] for recording
+# avoid duplicate: i) not used AND ii) first child OR (!= prev) OR (== prev, but prev is used)
 
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
@@ -26,8 +26,10 @@ class Solution:
         
         # generate child
         for i in range(len(nums)):
-            if not is_used[i]: # i) not used
-                if i == 0 or nums[i] != nums[i-1] or is_used[i-1]: # ii) i == 0 OR (!= prev) OR (== prev, but prev is used)
+            # i) not used
+            if not is_used[i]:
+                # ii) first child OR (!= prev) OR (== prev, but prev is used)
+                if i == 0 or nums[i] != nums[i-1] or is_used[i-1]:
                     holder.append(nums[i])
                     is_used[i] = True
                     self.dfs(ans, holder, nums, is_used)

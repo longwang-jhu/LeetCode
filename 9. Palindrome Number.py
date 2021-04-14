@@ -7,17 +7,16 @@
 
 ###############################################################################
 
-# compare x and xRev
+# palindrome number -> find x_rev -> compare x and x_rev
 
 class Solution:
     def isPalindrome(self, x: int) -> bool:
         if x == 0: return True
         if x < 0: return False
         
-        xRev = 0
-        xCopy = x
-        while xCopy != 0:
-            xCopy, digitLast = divmod(xCopy, 10)
-            xRev = xRev * 10 + digitLast
-        
-        return x == xRev
+        x_copy = x
+        x_rev = 0
+        while x_copy != 0:
+            x_copy, last_digit = divmod(x_copy, 10)
+            x_rev = x_rev * 10 + last_digit
+        return x == x_rev

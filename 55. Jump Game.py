@@ -10,35 +10,36 @@
 
 ###############################################################################
 
-# dp[i] = if can reach idx i
-
-# greedy: start from end, determine if can move back to beginning
+# jump -> curr depends on prev -> dp
+# dp[i] = if can reach nums[0, ..., i]
 
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
-        ### dp ###
+        if not nums or len(nums) == 1: return True
+
         n = len(nums)
-        if n == 1:
-            return True
-        
         dp = [False for _ in range(n)]
         dp[0] = True
         
         for i, jump in enumerate(nums):
-            if dp[i] == True:
+            if dp[i]:
                 if i + jump >= n - 1: # reach the end
                     return True
                 else:
                     dp[i + 1:i + jump + 1] = [True] * jump
             else:
                 return False
-        
-        ### greedy ###
+
+# greedy: start from end, determine if can move back to beginning
+
+    def canJump2(self, nums: List[int]) -> bool:
+        if not nums or len(nums) == 1: return True
+
         n = len(nums)
-        last_pos = n - 1
+        frontier = n - 1
         
-        for i in range(n-1, -1, -1): # loop backwards
-            if i + nums[i] >= last_pos: # determine if can jump to last position
-                last_pos = i
+        for i in range(n - 1, -1, -1): # move backwards
+            if i + nums[i] >= frontier: # determine if can jump to frontier
+                frontier = i
         
-        return last_pos == 0 # determine if can reach the beginning
+        return frontier == 0 # determine if can reach the beginning

@@ -4,30 +4,34 @@
 
 ###############################################################################
 
-# use ptrCurr, ptrSwap, ptrSwap1, ptrSwap2
+# SLL swap -> foward traversal
+# prev -> (curr -> next) -> ... becomes
+# prev -> (next -> curr) -> ...
 
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
 class Solution:
     def swapPairs(self, head: ListNode) -> ListNode:
-        dummyHead = ListNode(0)
-        ptrCurr = dummyHead # current point
+        if not head or not head.next: return head
         
-        dummyHead.next = head
-        ptrSwap = head # pointer for swapping
+        dummy = ListNode()
+        dummy.next = head
         
-        while ptrSwap and ptrSwap.next:
-            ptrSwap1 = ptrSwap
-            ptrSwap2 = ptrSwap.next
+        # prev -> curr
+        prev = dummy
+        curr = head
+        
+        while curr and curr.next: # stop at curr = tail or tail.next
+            # prev -> (curr -> next) -> ...
+            next = curr.next 
             
-            ptrCurr.next = ptrSwap2 # c-> 2 -> 3
-            ptrSwap1.next = ptrSwap2.next # 1 -> 3
-            ptrSwap2.next = ptrSwap1 # c-> 2-> 1 -> 3
-            
-            ptrCurr = ptrSwap1 # c -> 3
-            ptrSwap = ptrSwap1.next
-        
-        return dummyHead.next
+            # want to do: prev -> (next -> curr) -> ...
+            prev.next = next
+            curr.next, next.next = next.next, curr
+
+            prev, curr = curr, curr.next # move on
+        return dummy.next

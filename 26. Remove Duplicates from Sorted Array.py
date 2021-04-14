@@ -17,12 +17,17 @@
 
 ###############################################################################
 
-# use a slow ptr and modify it on the go
+# in-place remove, sorted -> slow and fast ptrs
+
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        slow_ptr = 0
-        for i in range(1, len(nums)):
-            if nums[i] != nums[slow_ptr]:
-                slow_ptr += 1
-                nums[slow_ptr] = nums[i]
-        return slow_ptr + 1
+        if not nums or len(nums) == 0: return 0
+        if len(nums) == 1: return 1
+        
+        slow, fast = 0, 1
+        while fast < len(nums):
+            if nums[fast] != nums[slow]:
+                slow += 1 # only increase when different
+                nums[slow] = nums[fast]
+            fast += 1
+        return slow + 1

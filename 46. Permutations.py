@@ -5,25 +5,27 @@
 
 ###############################################################################
 
-# dfs: add all as child
-# skip those already in holder
+# all combos -> dfs -> add child that is not used
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         if not nums or len(nums) == 0: return []
         
         ans = []
-        self.dfs(ans, [], nums)
+        is_used = set()
+        self.dfs(ans, [], nums, is_used)
         return ans
         
-    def dfs(self, ans, holder, nums):
+    def dfs(self, ans, holder, nums, is_used):
         if len(holder) == len(nums):
             ans.append(holder.copy())
             return
         
         # generate child
         for num in nums:
-            if num not in holder: # all nums are distinct
+            if num not in is_used: # no reuse
                 holder.append(num)
-                self.dfs(ans, holder, nums)
+                is_used.add(num)
+                self.dfs(ans, holder, nums, is_used)
                 holder.pop()
+                is_used.remove(num)

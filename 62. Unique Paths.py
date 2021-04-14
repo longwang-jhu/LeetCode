@@ -11,22 +11,24 @@
 
 ###############################################################################
 
-# dp[m][n] = unique path to reach (m,n)
+# curr depends on prev -> dp
+# dp[m][n] = unique path to reach (m, n)
 
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        dp = [[0 for _ in range(n)] for _ in range(m)]
+        if not m or not n: return 0
+        if m == 1 or n == 1: return 1
+        
+        dp = [[0] * n for _ in range(m)]
         
         # initialize
         dp[0][0] = 1
-        # initialize first column
         for i in range(1,m):
-            dp[i][0] = dp[i-1][0]
-        # initialize first row
+            dp[i][0] = 1
         for j in range(1,n):
-            dp[0][j] = dp[0][j-1]
+            dp[0][j] = 1
         
-        # loop over each row
+        # loop over row and column
         for i in range(1,m):
             for j in range(1,n):
                 dp[i][j] = dp[i][j-1] + dp[i-1][j]

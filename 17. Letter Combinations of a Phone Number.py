@@ -11,14 +11,14 @@
 
 ###############################################################################
 
-# use dfs or bfs
+# all combinations -> dfs / bfs
+# Dict with key = digit and value = letters
 
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
-        if digits == "":
-            return []
+        if not digits or len(digits) == 0: return []
         
-        digitToLetterDict = {
+        digits_dict = {
             "2": "abc",
             "3": "def",
             "4": "ghi",
@@ -27,47 +27,29 @@ class Solution:
             "7": "pqrs",
             "8": "tuv",
             "9": "wxyz"}
-             
-        # dfs
-        # def dfs(idx: int):
-        #     if idx == len(digits): # reach the end
-        #         res.append("".join(letterComb))
-        #     else:
-        #         digit = digits[idx]
-        #         for letter in digitToLetterDict[digit]:
-        #             letterComb.append(letter) # go to child
-        #             dfs(idx + 1)
-        #             letterComb.pop() # go back to parent
-        # res = []
-        # letterComb = []
-        # dfs(0)
-        # return res
         
-        # bfs - simple
-        # res = [""]
-        # for digit in digits:
-        #     new_res = []
-        #     for letterComb in res:
-        #         for letter in digitToLetterDict[digit]:       
-        #             # add a new letter
-        #             new_res.append(letterComb + letter)
-        #     res = new_res
-        # return res
+        ans = []
+        self.dfs(ans, [], 0, digits, digits_dict)
+        return ans
         
-        # bfs - recursive
-        def bfs(idx: int):
-            if idx == len(digits): # reach the end
-                return
-            else:
-                digit = digits[idx]
-                new_res = []
-                for letterComb in res:
-                    for letter in digitToLetterDict[digit]:
-                        new_res.append(letterComb + letter)              
-                res.clear()
-                res.extend(new_res)
-                bfs(idx + 1)
+        # return self.bfs(digits, digits_dict)
         
-        res = [""]
-        bfs(0)
-        return res
+    def dfs(self, ans, holder, pos, digits, digits_dict):
+        if pos == len(digits):
+            ans.append(''.join(holder))
+            return
+        
+        for letter in digits_dict[digits[pos]]:
+            holder.append(letter)
+            self.dfs(ans, holder, pos + 1, digits, digits_dict)
+            holder.pop()
+
+    def bfs(self, digits, digits_dict):
+        ans = ['']
+        for digit in digits:
+            new_ans = []
+            for ele in ans:
+                for letter in digits_dict[digit]:
+                    new_ans.append(ele + letter)
+            ans = new_ans
+        return ans

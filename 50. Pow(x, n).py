@@ -4,10 +4,15 @@
 
 ###############################################################################
 
-# log(n)
+# x^n -> (x*x)^(n/2) -> (x*x*x*x)^(n/2/2) -> ...
+# if odd: x^n -> x * x^(n-1)
+# time: log(n)
 
 class Solution:
     def myPow(self, x: float, n: int) -> float:
+        if n == 0: return 1
+        if n == 1: return x
+        
         n_abs = abs(n)
         ans = 1
         while n_abs > 0:
@@ -18,7 +23,4 @@ class Solution:
                 ans *= x
                 n_abs -= 1
         
-        if n < 0:
-            return 1 / ans
-        else:
-            return ans
+        return ans if n > 0 else 1 / ans

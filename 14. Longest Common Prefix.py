@@ -7,20 +7,18 @@
 
 ###############################################################################
 
-# use the first string as the base and compare with other strings
+# one-pass -> compare with the first string
 
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        if len(strs) == 0:
-            return ""
+        if not strs or len(strs) == 0: return ''
+        if len(strs) == 1: return strs[0]
         
-        res = ""
-        for charIdx in range(len(strs[0])):
-            char = strs[0][charIdx]
-            
-            # compare with other strings
-            for strIdx in range(1, len(strs)):
-                if (charIdx >= len(strs[strIdx])) or (char != strs[strIdx][charIdx]):
-                    return res
-            res += char
-        return res
+        ans = ''
+        for i in range(len(strs[0])):
+            char = strs[0][i]
+            for string in strs[1:]: # compare with other strings
+                if i >= len(string) or char != string[i]:
+                    return ans
+            ans += char
+        return ans

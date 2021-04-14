@@ -11,28 +11,23 @@
 
 ###############################################################################
 
-# record each row seperately
-# use rowIncrement and filp direction when reach edge rows
+# rearrange string -> display by rows -> record each row seperately
+# use row_incr = +/- 1 and filp direction when reach the edge row
 
 class Solution:
     def convert(self, s: str, numRows: int) -> str:
-        if numRows == 1:
-            return s
+        if not s or numRows == 0: return None
+        if numRows == 1: return s
         
-        currRes = [""] * numRows # record each row seperately
+        n_row = numRows
+        rows = [''] * n_row # record each row seperately
         
-        currRow = 0
-        rowIncrement = 1
-        
+        curr_row = 0
+        row_incr = 1
         for i in range(len(s)):
-            currRes[currRow] += s[i]
-            currRow += rowIncrement
-            
-            if currRow == 0 or currRow == numRows - 1: # each the edge rows
-                rowIncrement *= -1 # filp direction
+            rows[curr_row] += s[i]
+            curr_row += row_incr
+            if curr_row == 0 or curr_row == n_row - 1: # each the edge row
+                row_incr *= -1 # filp direction
         
-        res = ""
-        for j in range(numRows):
-            res += currRes[j]
-        
-        return res
+        return ''.join(rows)

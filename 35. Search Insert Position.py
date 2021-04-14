@@ -6,24 +6,26 @@
 
 ###############################################################################
 
-# binary search: find first position >= target
+# find target, sorted -> binary search
 
 class Solution:
     def searchInsert(self, nums: List[int], target: int) -> int:
-        left, right = 0, len(nums) - 1
+        if not nums or len(nums) == 0: return 0
+        if nums[0] > target: return 0
+        if nums[-1] < target: return len(nums)
         
+        left, right = 0, len(nums) - 1
         while left + 1 < right:
             mid = left + (right - left) // 2
             if nums[mid] == target:
                 return mid
-            elif target < nums[mid]:
+            elif nums[mid] > target:
                 right = mid
-            elif nums[mid] < target:
+            else: # nums[mid] < target
                 left = mid
         
-        if nums[left] >= target:
+        # left <= target <= right
+        if nums[left] == target:
             return left
-        elif nums[right] >= target:
+        else: # nums[right] >= target:
             return right
-        else:
-            return len(nums)

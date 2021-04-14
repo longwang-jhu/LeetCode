@@ -6,21 +6,22 @@
 
 ###############################################################################
 
-# sort first
-# fix a, use two pointers for b and c, and move towards the middle
+# recall 3Sum -> sort -> fix a -> 2Sum
+# since sorted, use pointers for b and c and move towards the middle
 
 class Solution:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
+        if not nums or len(nums) < 3: return None
+        
         n = len(nums)
         nums.sort()
         best = float('inf')
         
-        for i in range(n):
-            # no repeat for a
-            if i > 0 and nums[i] == nums[i-1]:
+        for i in range(n - 2):
+            if i > 0 and nums[i] == nums[i-1]: # skip identical a
                 continue
             
-            # use two pointers for b and c, and move towards the middle
+            # use pointers for b and c, and move towards the middle
             l = i + 1
             r = n - 1
             

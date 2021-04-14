@@ -13,22 +13,25 @@
 
 ###############################################################################
 
-# dfs: sort first, add child from start to end
+# all unique combos -> sort and dfs
+# unlimited times -> don't incr i when go to child
 
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         candidates.sort()
         ans = []
-        self.dfs(ans, 0, [], candidates, target)
+        self.dfs(ans, [], 0, candidates, target)
         return ans
     
-    def dfs(self, ans, start, holder, candidates, remain):
+    def dfs(self, ans, holder, start_idx, candidates, remain):
         if remain < 0:
             return
         if remain == 0:
             ans.append(holder.copy())
+            return
         
-        for i in range(start, len(candidates)):
+        for i in range(start_idx, len(candidates)):
             holder.append(candidates[i])
-            self.dfs(ans, i, holder, candidates, remain - candidates[i]) # use i since can reuse, set remain = remain - number
+            # use i since can reuse, set remain = remain - number
+            self.dfs(ans, holder, i, candidates, remain - candidates[i])
             holder.pop()

@@ -11,17 +11,17 @@
 
 ###############################################################################
 
-# loop backwards, add 1 to digit and return
-# if digit = 9, change it 0 and move forwards
+# travel backwards, add 1 to digit and return
+# if digit == 9, change it 0 and move on
 
 class Solution:
     def plusOne(self, digits: List[int]) -> List[int]:
-        for i in range(len(digits) - 1, -1, -1):
+        for i in range(len(digits) - 1, -1, -1): # backward traversal
             if digits[i] < 9:
                 digits[i] += 1
                 return digits
             else: # digits[i] = 9
                 digits[i] = 0
         
-        # for 9999
+        # for 999...
         return [1] + digits

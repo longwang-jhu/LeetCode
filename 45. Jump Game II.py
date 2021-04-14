@@ -12,22 +12,24 @@
 
 ###############################################################################
 
-# dp[i] = minimum jumps to reach pos i
-# record last_pos, update when can go beyond last_pos
+# jump -> curr depends on prev -> dp
+# dp[i] = min jumps to reach nums[0, ..., i]
+# record frontier
 
 class Solution:
     def jump(self, nums: List[int]) -> int:
-        n = len(nums)
-        if n == 1:
-            return 0
+        if not nums or len(nums) == 1: return 0
         
-        dp = [0 for _ in range(n)]
-        last_pos = 0
+        n = len(nums)
+        dp = [n] * n
+        dp[0] = 0
+        frontier = 0
         
         for i, jump in enumerate(nums):
-            new_last_pos = i + jump
-            if new_last_pos >= n - 1: # reach the end
+            new_pos = i + jump
+            if new_pos >= n - 1: # reach the end
                 return dp[i] + 1
-            elif new_last_pos > last_pos: # can go beyond
-                dp[last_pos + 1:new_last_pos + 1] = [dp[i] + 1] * (new_last_pos - last_pos)
-                last_pos = new_last_pos
+            elif new_pos > frontier: # can go further
+                # update dp[frontier+1, ..., new_pos] = dp[i] + 1
+                dp[frontier + 1:new_pos + 1] = [dp[i] + 1] * (new_pos - frontier)
+                frontier = new_pos

@@ -1,31 +1,29 @@
 # https://leetcode.com/problems/4sum/
 
-# Given an array nums of n integers and an integer target, are there elements
-# a, b, c, and d in nums such that a + b + c + d = target? Find all unique
-# quadruplets in the array which gives the sum of target.
+# Given an array nums of n integers, return an array of all the unique
+# quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
 
-# Notice that the solution set must not contain duplicate quadruplets.
+# You may return the answer in any order.
 
 ###############################################################################
 
-# sort first
-# fix a, b, use two pointers for c and d, and move towards the middle
+# recall 3Sum -> sort -> fix a, b -> 2Sum
+# since sorted, use ptrs for c and d and move towards the middle
 
 class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
-        if not nums or len(nums) < 4:
-            return []
+        if not nums or len(nums) < 4: return []
         
-        n = len(nums)   
+        n = len(nums)
         nums.sort()
-        res = []
+        ans = []
         
         for i in range(n - 3):
-            if i > 0 and nums[i] == nums[i-1]: # no repeat for a
+            if i > 0 and nums[i] == nums[i-1]: # skip identical a
                 continue
             
             for j in range(i + 1, n - 2):
-                if j > i + 1 and nums[j] == nums[j-1]: # no repeat for b
+                if j > i + 1 and nums[j] == nums[j-1]: # skip identical b
                     continue
                 
                 # find c + d = a + b
@@ -39,16 +37,15 @@ class Solution:
                     elif total > target:
                         r -= 1
                     else:
-                        res.append([nums[i], nums[j], nums[l], nums[r]])
-                        
-                        # no repeat for c
+                        ans.append([nums[i], nums[j], nums[l], nums[r]])
+                        # continue search for c, d
+                        # skip identical c
                         while l < r and nums[l] == nums[l+1]:
                             l += 1
                         l += 1
                         
-                        # no repeat for d
+                        # skip identical d
                         while l < r and nums[r] == nums[r-1]:
                             r -= 1
                         r-= 1
-                        
-        return res
+        return ans

@@ -14,23 +14,26 @@
 
 ###############################################################################
 
-# binary search: [first part | second part]
-# determine which part mid is in
+# find target, sorted -> binary search
+# num = [1st part | 2nd part]
+# for mid, decide which part it in
 
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        left, right = 0, len(nums) - 1
+        if not nums or len(nums) == 0: return -1
+        if len(nums) == 1: return 0 if nums[0] == target else -1
         
+        left, right = 0, len(nums) - 1
         while left + 1 < right:
             mid = left + (right - left) // 2
             if nums[mid] == target:
                 return mid
-            elif nums[left] < nums[mid]: # mid is in the first part
+            elif nums[mid] > nums[right]: # mid in [1st part]
                 if nums[left] <= target <= nums[mid]:
                     right = mid
                 else:
                     left = mid
-            else: # mid is in the second part
+            else: # mid in [2nd part]
                 if nums[mid] <= target <= nums[right]:
                     left = mid
                 else:
@@ -38,6 +41,7 @@ class Solution:
         
         if nums[left] == target:
             return left
-        if nums[right] == target:
+        elif nums[right] == target:
             return right
-        return -1
+        else:
+            return -1

@@ -11,8 +11,7 @@
 ###############################################################################
 
 # search for num pairs -> Dict
-
-# use Dict with key = value, val = idx
+# Dict with key = value, val = idx
 # for every num, look for its complement value in Dict
 
 class Solution:

@@ -8,10 +8,8 @@
 
 ###############################################################################
 
-# dfs(row), place queen at each row
-# place queen, update free position
-# generate child for every col and (row, col) is free
-# remove queen, update free position
+# all unique sol -> dfs -> place queen by row
+# keep updating free position
 
 # diag: (2n + 1) lines, row + col = i if (row, col) on diag[i], counting from top-left
 # anti-diag: (2n + 1) lines, row - col + n - 1 = i if (row, col) on diag[i], counting from top-right

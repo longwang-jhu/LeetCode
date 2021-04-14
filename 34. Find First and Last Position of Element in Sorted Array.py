@@ -9,48 +9,45 @@
 
 ###############################################################################
 
-# use binary search to find starting and ending position seperately
+# find target, sorted -> binary search
+# find start_idx, end_idx seperately
 
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums or len(nums) == 0: return [-1, -1]
+        if len(nums) == 1: return [0, 0] if nums[0] == target else [-1, -1]
+        
         n = len(nums)
-        if n == 0:
-            return [-1,-1]
         
-        # find starting position
+        # find start_idx
         left, right = 0, n - 1
         while left + 1 < right:
             mid = left + (right - left) // 2
-            if nums[mid] == target:
+            if nums[mid] >= target:
                 right = mid
-            elif nums[mid] > target:
-                right = mid
-            elif nums[mid] < target:
-                left = mid
-        
+            else: # nums[mid] < target
+                left = mid        
         if nums[left] == target:
-            ans_start = left
+            start_idx = left
         elif nums[right] == target:
-            ans_start = right
+            start_idx = right
         else:
-            ans_start = -1
+            start_idx = -1
         
-        # find ending position
+        # find end_idx
         left, right = 0, n - 1
         while left + 1 < right:
             mid = left + (right - left) // 2
-            if nums[mid] == target:
+            if nums[mid] <= target:
                 left = mid
-            elif nums[mid] > target:
+            else: # nums[mid] > target
                 right = mid
-            elif nums[mid] < target:
-                left = mid
         
         if nums[right] == target:
-            ans_end = right
+            end_idx = right
         elif nums[left] == target:
-            ans_end = left
+            end_idx = left
         else:
-            ans_end = -1
+            end_idx = -1
         
-        return [ans_start, ans_end]
+        return [start_idx, end_idx]

@@ -8,7 +8,7 @@
 
 ###############################################################################
 
-# n & n-1
+# bit operation -> not power of two: n & n-1 == 0
 
 class Solution:
     def isPowerOfTwo(self, n: int) -> bool:

@@ -7,16 +7,16 @@
 
 ###############################################################################
 
-# use slow and fast
+# linked list -> nth node from end -> slow and fast ptrs
 
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
 class Solution:
     def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
-        # one pass
         dummy = ListNode()
         dummy.next = head
         slow, fast = dummy, dummy
@@ -26,9 +26,9 @@ class Solution:
             fast = fast.next
         
         # move fast and slow together
-        while fast.next: # stop at fast = tail
+        while fast.next: # stop at fast = tail, slow.next = desired node
             slow = slow.next
             fast = fast.next
         
-        slow.next = slow.next.next # skip the desire node
+        slow.next = slow.next.next # skip the desired node
         return dummy.next

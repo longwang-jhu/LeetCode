@@ -7,8 +7,8 @@
 
 ###############################################################################
 
-# use priority queue
-# time comp: O(n logk)
+# SLL -> foward traversal -> Heap for choosing the smallest node
+# time: O(nlogk)
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -16,27 +16,28 @@
 #         self.val = val
 #         self.next = next
 
-from queue import PriorityQueue
-
+from heapq import *
 class Solution:
-    def mergeKLists(self, lists: List[ListNode]) -> ListNode:      
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        if not lists or len(lists) == 0: return None
+        
         dummy = ListNode()
         curr = dummy
-        pq = PriorityQueue()
         
-        # put every list into the queue, use idx to avoid tie of head.val
-        for idx, head in enumerate(lists):
-            if head:
-                pq.put((head.val, idx, head))
+        min_heap = []
+        # put every list into the min_heap
+        for idx, node in enumerate(lists):
+            if node:
+                heappush(min_heap, (node.val, idx, node)) # use idx to avoid tie
         
-        while not pq.empty():
-            val, idx, head = pq.get() # get the smallest value
-            curr.next = head
+        while min_heap:
+            val, idx, node = heappop(min_heap) # get the smallest value
+            curr.next = node
             curr = curr.next
             
-            # move to the next value and put it into the queue
-            head = head.next
-            if head:
-                pq.put((head.val, idx, head))
+            # move to the next value and put it into min_heap
+            node = node.next
+            if node:
+                heappush(min_heap, (node.val, idx, node))
         
         return dummy.next
