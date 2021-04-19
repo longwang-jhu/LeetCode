@@ -10,57 +10,61 @@
 ###############################################################################
 
 # Trie: convert words to trie
-# bfs: start from every position on board
+# bfs: start from every pos on board
 
+from collections import defaultdict
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         if not board or not words: return []
         
-        m, n = len(board), len(board[0])
+        self.board = board
+        self.m, self.n = len(board), len(board[0])
         
         # construct a trie
         trie = Trie()
-        curr = trie.root
         for word in words:
             trie.insert(word)
         
         # search for words
-        visited = [[False] * n for _ in range(m)]
-        ans = []
-        
-        for i in range(m):
-            for j in range(n):
-                self.dfs(ans, [], curr, i, j, board, visited)
-        return ans
+        self.ans = []
+        curr = trie.root
+        # loop over every pos on board
+        for i in range(self.m):
+            for j in range(self.n):
+                self.holder = []
+                self.is_visited = set()
+                self.dfs(curr, i, j)
+        return self.ans
     
-    def dfs(self, ans, holder, curr, i, j, board, visited):
+    def dfs(self, curr, i, j):
         if curr.is_word:
-            ans.append(''.join(holder))
+            self.ans.append(''.join(self.holder))
             curr.is_word = False
         
-        if i < 0 or i == len(board) or j < 0 or j == len(board[0]) or visited[i][j]:
+        if i < 0 or i == self.m or j < 0 or j == self.n or (i,j) in self.is_visited:
             return
         
-        if board[i][j] not in curr.children:
+        char = self.board[i][j]
+        if char not in curr.child:
             return
         else:
-            curr = curr.children[board[i][j]] # move to child
+            curr = curr.child[char] # move to child
         
-        holder.append(board[i][j])
-        visited[i][j] = True
+        self.holder.append(char)
+        self.is_visited.add((i,j))
         
-        self.dfs(ans, holder, curr, i - 1, j, board, visited)
-        self.dfs(ans, holder, curr, i + 1, j, board, visited)
-        self.dfs(ans, holder, curr, i, j - 1, board, visited)
-        self.dfs(ans, holder, curr, i, j + 1, board, visited)
+        self.dfs(curr, i - 1, j)
+        self.dfs(curr, i + 1, j)
+        self.dfs(curr, i, j - 1)
+        self.dfs(curr, i, j + 1)
         
-        holder.pop()
-        visited[i][j] = False
+        self.holder.pop()
+        self.is_visited.remove((i,j))
         
 # define TrieNode and Trie
 class TrieNode():
     def __init__(self):
-        self.children = dict() # key = char, value = TrieNode
+        self.child = defaultdict(TrieNode) # key = char, value = TrieNode
         self.is_word = False
 
 class Trie():
@@ -70,7 +74,5 @@ class Trie():
     def insert(self, word):
         curr = self.root
         for char in word:
-            if char not in curr.children:
-                curr.children[char] = TrieNode()
-            curr = curr.children[char] # move to child
+            curr = curr.child[char] # move to child
         curr.is_word = True

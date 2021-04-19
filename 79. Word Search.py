@@ -7,12 +7,9 @@
 # where adjacent cells are horizontally or vertically neighboring. The same
 # letter cell may not be used more than once.
 
-# Note: There will be some test cases with a board or a word larger than
-# constraints to test if your solution is using pruning.
-
 ###############################################################################
 
-# bfs: start from every position in board
+# dfs: start from every position in board
 # avoid revisit by tracking visited position
 # return True if found answer
 
@@ -20,28 +17,32 @@ class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
         if not board: return False
         
-        m, n = len(board), len(board[0])
-        visited = [[False] * n for _ in range(m)]
-        ans = [False]
+        self.board = board
+        self.word = word
+        self.m, self.n = len(self.board), len(self.board[0])
+        self.is_visited = set()
         
-        for i in range(m):
-            for j in range(n):
-                if self.dfs(0, i, j, word, board, visited):
+        # start from every pos
+        for i in range(self.m):
+            for j in range(self.n):
+                if self.dfs(0, i, j):
                     return True
         return False
     
-    def dfs(self, char_idx, i, j, word, board, visited):
-        if char_idx == len(word):
+    def dfs(self, char_idx, i, j):
+        if char_idx == len(self.word):
             return True
         
-        if i < 0 or i == len(board) or j < 0 or j == len(board[0]) or visited[i][j] or word[char_idx] != board[i][j]:
+        # check valid
+        if i < 0 or i >= self.m or j < 0 or j >= self.n \
+        or (i,j) in self.is_visited or self.word[char_idx] != self.board[i][j]:
             return False
         
-        visited[i][j] = True
-        found = self.dfs(char_idx + 1, i - 1, j, word, board, visited) \
-        or self.dfs(char_idx + 1, i + 1, j, word, board, visited) \
-        or self.dfs(char_idx + 1, i, j - 1, word, board, visited) \
-        or self.dfs(char_idx + 1, i, j + 1, word, board, visited)
-        visited[i][j] = False
+        self.is_visited.add((i,j))
+        found = self.dfs(char_idx + 1, i - 1, j) \
+        or self.dfs(char_idx + 1, i + 1, j) \
+        or self.dfs(char_idx + 1, i, j - 1) \
+        or self.dfs(char_idx + 1, i, j + 1)
+        self.is_visited.remove((i,j))
         
         return found

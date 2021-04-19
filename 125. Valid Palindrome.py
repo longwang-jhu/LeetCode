@@ -6,12 +6,14 @@
 ###############################################################################
 
 # use left and right
-# use char.isalnum()
+# use char.isalnum() for 'a-Z,0-9'
 
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        left, right = 0, len(s) - 1
+        n = len(s)
+        if n == 1: return True
         
+        left, right = 0, n - 1
         while left < right:
             while left < right and not s[left].isalnum(): # look for alnum
                 left += 1

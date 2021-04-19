@@ -7,7 +7,8 @@
 
 ###############################################################################
 
-# divide and conquer, record (is_valid, min_val, max_val)
+# divide and conquer
+# need (is_valid, min_val, max_val) of both sides
 
 # Definition for a binary tree node.
 # class TreeNode:
@@ -17,32 +18,34 @@
 #         self.right = right
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
+        if not root: return True
+        
         return self.valid_BST(root)[0]
     
     def valid_BST(self, root):
         if not root:
-            return (True, float("-inf"), float("inf"))
+            return True, None, None
         
-        left_valid, left_min, left_max = self.valid_BST(root.left)
-        right_valid, right_min, right_max = self.valid_BST(root.right)
+        l_is_valid, l_min, l_max = self.valid_BST(root.left)
+        r_is_valid, r_min, r_max = self.valid_BST(root.right)
         
-        if root.left and root.right:
-            if not left_valid or not right_valid or not (left_max < root.val < right_min):
-                return (False, None, None)
-            else:
-                return (True, left_min, right_max)
-
-        if root.left and not root.right: # no right child
-            if not left_valid or not (left_max < root.val):
-                return (False, None, None)
-            else:
-                return (True, left_min, root.val)
-
-        if not root.left and root.right: # no left child
-            if not right_valid or not (root.val < right_min):
-                return (False, None, None)
-            else:
-                return (True, root.val, right_max)
-
         if not root.right and not root.left: # no left and right children
-            return (True, root.val, root.val)           
+            return True, root.val, root.val
+        
+        if root.left and not root.right: # no right child
+            if not l_is_valid or not l_max < root.val:
+                return False, None, None
+            else:
+                return True, l_min, root.val
+        
+        if not root.left and root.right: # no left child
+            if not r_is_valid or not root.val < r_min:
+                return False, None, None
+            else:
+                return True, root.val, r_max
+            
+        if root.left and root.right:
+            if not l_is_valid or not r_is_valid or not l_max < root.val < r_min:
+                return False, None, None
+            else:
+                return True, l_min, r_max

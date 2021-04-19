@@ -4,65 +4,70 @@
 
 ###############################################################################
 
-# palindrome -> DP
-# DP[i,j] = s[i, ..., j] is palindromic
+# palindrome -> dp
+# dp[i][j] = s[i...j] is good
+# dp[i][j] = s[i+1...j-1] is good and s[i] == s[j]
 # time: O(n^2), space: O(n^2)
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
         if not s: return None
-        if len(s) == 1: return s
-        
         n = len(s)
+        if n == 1: return s
+        
+        max_len_start = max_len_end = 0
         dp = [[False] * n for _ in range(n)]
-        ans = (0, 0) # (start_idx, end_idx) for longest palindromic substring
         
-        for i in range(n):
+        # base case
+        for i in range(n): # single char str
             dp[i][i] = True
-        for i in range(n - 1):
-            if s[i] == s[i+1]:
-                dp[i][i+1] = True
-                ans = (i, i + 1)
+        for i in range(n - 1): # double char str
+            if s[i] == s[i + 1]:
+                dp[i][i + 1] = True
+                max_len_start, max_len_end = i, i + 1
         
+        # loop for incr
         for incr in range(2, n): # incr = 2, ..., n - 1
             for i in range(n - incr): # i = 0, ..., n - 1 - incr
-                j = i + incr
-                if dp[i+1][j-1] and s[i] == s[j]:
+                j = i + incr # s[i...j]
+                if dp[i + 1][j - 1] and s[i] == s[j]:
                     dp[i][j] = True
-                    ans = (i, j)
+                    max_len_start, max_len_end = i, j
 
-        return s[ans[0]:ans[1] + 1]
+        return s[max_len_start : max_len_end + 1]
 
 # palindrome -> expand around center
 # expand around 'a' and 'ab' for every char in string
 # time: O(n^2), space: O(1)
 
 # class Solution:
-    def longestPalindrome2(self, s: str) -> str:
+    def expand_center(self, s):
         if not s: return None
+        n = len(s)
         if len(s) == 1: return s
         
-        n = len(s)
         max_len = 0
-        start, end = 0, 0 # start_idx and end_idx for longest palindromic substring
-        for idx in range(n):
-            pali_len_a, start_a, end_a = self.get_pali_len(idx, idx, s) # expand around 'a'
-            pali_len_ab, start_ab, end_ab = self.get_pali_len(idx, idx + 1, s) # expand around 'ab'
+        max_len_start = max_len_end = 0
+        
+        for i in range(n):
+            len_a, start_a, end_a = self.get_len(i, i, s) # expand around 'a'
+            len_ab, start_ab, end_ab = self.get_len(i, i + 1, s) # expand around 'ab'
             
-            if pali_len_a > max_len:
-                max_len = pali_len_a
-                start, end = start_a, end_a
-            if pali_len_ab > max_len:
-                max_len = pali_len_ab
-                start, end = start_ab, end_ab
+            if len_a > max_len:
+                max_len = len_a
+                max_len_start, max_len_end = start_a, end_a
+                
+            if len_ab > max_len:
+                max_len = len_ab
+                max_len_start, max_len_end = start_ab, end_ab
 
-        return s[start:end + 1]
+        return s[max_len_start : max_len_end + 1]
     
-    # Expand around center to get the longest Palindromic substring
-    def get_pali_len(self, l, r, s):
+    # Expand around center
+    def get_len(self, l, r, s):
         if l < 0 or r >= len(s): return 0, None, None
         
         while l >= 0 and r < len(s) and s[l] == s[r]:
-                l -= 1
-                r += 1
-        return r - l - 1, l + 1, r - 1 # lenght, start_idx, end_idx
+            l -= 1
+            r += 1
+        return r - l - 1, l + 1, r - 1 # length, start_idx, end_idx

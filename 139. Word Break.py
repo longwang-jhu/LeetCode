@@ -8,9 +8,9 @@
 
 ###############################################################################
 
-# dp[i] = if can break substring from 0 to i
-# update by checking prev dp[j] and make sure substring (left, right) is in wordDict
-# get max word length for speed up
+# dp[i] = if can break using s[0...i]
+# to update dp[i], check if s[j...i] is word and dp[j] == True
+# speed up: stop when len(s[j...i]) > max_word_len
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
@@ -19,15 +19,18 @@ class Solution:
         for word in wordDict:
             max_word_len = max(max_word_len, len(word))
         
-        # dp[i] = if can break substring from 0 to i
+        # init
         n = len(s)
-        dp = [False for _ in range(n)]
-        for right in range(n):
-            left_start = max(0, right - 1 - max_word_len) # for speed up
-            for left in range(left_start, right + 1): # cut just before left
-                if s[left:right + 1] in wordDict: # check if substring (left, right) is in wordDict
-                    if left == 0 or dp[left - 1]: # entire substring, or the prev substring (0, left-1) is in wordDict
-                        dp[right] = True
-                        continue
+        dp = [False] * n
+        
+        # dp
+        for i in range(n):
+            for j in range(i, -1, -1): # j = i-1...0
+                # check if s[j...i] is word
+                if i - j + 1 > max_word_len:
+                    break # no need to go furthur
+                if (j == 0 or dp[j - 1]) and s[j : i + 1] in wordDict:
+                    dp[i] = True
+                    break
 
         return dp[-1]

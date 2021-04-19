@@ -7,7 +7,7 @@
 
 ###############################################################################
 
-# SLL -> foward traversal -> Heap for choosing the smallest node
+# foward traverse -> min_heap
 # time: O(nlogk)
 
 # Definition for singly-linked list.
@@ -15,17 +15,16 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-
 from heapq import *
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        if not lists or len(lists) == 0: return None
+        if not lists: return None
+        if lists == [[]]: return None
         
         dummy = ListNode()
         curr = dummy
-        
         min_heap = []
-        # put every list into the min_heap
+        # put every list into min_heap
         for idx, node in enumerate(lists):
             if node:
                 heappush(min_heap, (node.val, idx, node)) # use idx to avoid tie

@@ -7,7 +7,7 @@
 
 ###############################################################################
 
-# new ele must match most recent one -> stack
+# stack
 
 class Solution:
     def isValid(self, s: str) -> bool:
@@ -28,4 +28,5 @@ class Solution:
                 return False
             else:
                 stack.pop()
+        
         return True if not stack else False

@@ -11,26 +11,25 @@
 
 ###############################################################################
 
-# backpack
-# dp[i][j] = fewest way to use first i coins to get amount=j
+# backpack -> dp[i][j] = fewest coins of first i coins to get amount j
 
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         n = len(coins)
         
-        dp = [[2**31 - 1 for _ in range(amount + 1)] for _ in range(n + 1)]
-        for i in range(n + 1): # 0 way to get amount=0
+        # init
+        dp = [[float("inf")] * (amount + 1) for _ in range(n + 1)]
+        for i in range(n + 1): # 0 way to get amount 0
             dp[i][0] = 0
-        # for j in range(1, amount + 1): # no way to get amount>0 without coins
-        #     dp[0][j] = 2**31 - 1
+        # dp[0][j] = float("inf") # no way get any amount without coin
         
+        # dp
         for i in range(n + 1):
             for j in range(1, amount + 1):
-                dp[i][j] = dp[i-1][j] # not use the new coin
-                if coins[i-1] <= j: # may use the new coin
+                dp[i][j] = dp[i-1][j] # not use coins[i-1]
+                if coins[i-1] <= j: # use coins[i-1]
                     dp[i][j] = min(dp[i][j], dp[i][j - coins[i-1]] + 1)
         
-        if dp[-1][-1] == 2**31 - 1:
+        if dp[-1][-1] == float("inf"):
             return -1
-        else:
-            return dp[-1][-1]
+        return dp[-1][-1]

@@ -10,24 +10,23 @@
 
 ###############################################################################
 
-# two pointers starting from both ends -> move towards the middle
-# move the shorter one (hope to improve)
+# greedy: two ptrs move towards middle -> move the shorter one (hope to improve)
 
 class Solution:
     def maxArea(self, height: List[int]) -> int:
         if not height or len(height) == 1: return 0
 
         # two pointers move towards the middle
-        l, r = 0, len(height) - 1
+        left, right = 0, len(height) - 1
         ans = 0
         
-        while l < r:
-            area = min(height[l], height[r]) * (r - l)
+        while left < right:
+            area = min(height[left], height[right]) * (right - left)
             ans = max(ans, area)
             
             # move the shorter one
-            if height[l] < height[r]:
-                l += 1
+            if height[left] < height[right]:
+                left += 1
             else:
-                r -= 1
+                right -= 1
         return ans

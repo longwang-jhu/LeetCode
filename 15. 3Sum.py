@@ -9,7 +9,7 @@
 ###############################################################################
 
 # unique triplets -> sort -> fix a -> 2Sum
-# since sorted, use pointers for b and c and move towards the middle
+# sorted -> use ptrs for b and c and move towards middle
 
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
@@ -19,32 +19,30 @@ class Solution:
         nums.sort()
         ans = []
         
-        for i in range(n - 2):
-            if i > 0 and nums[i] == nums[i-1]: # skip identical a
+        for offset in range(n - 2): # for a = nums[offset]
+            if offset > 0 and nums[offset] == nums[offset - 1]: # skip identical a
                 continue
             
             # find b + c = -a
-            target = -nums[i]
-            # use pointers for b and c, and move towards the middle
-            l = i + 1
-            r = n - 1
+            target = - nums[offset]
+            # use ptrs for b and c, and move towards middle
+            left = offset + 1
+            right = n - 1
             
-            while l < r:
-                total = nums[l] + nums[r]
+            while left < right:
+                total = nums[left] + nums[right]
                 if total < target: # b is too small
-                    l += 1
+                    left += 1
                 elif total > target: # c is too large
-                    r -= 1
+                    right -= 1
                 else:
-                    ans.append([nums[i], nums[l], nums[r]])
+                    ans.append([nums[offset], nums[left], nums[right]])
                     # continue search for b, c
-                    # skip identical b
-                    while l < r and nums[l] == nums[l+1]:
-                        l += 1
-                    l += 1
-                    
-                    # skip identical c
-                    while l < r and nums[r] == nums[r-1]:
-                        r -= 1
-                    r -= 1
+                    while left < right and nums[left] == nums[left + 1]: # skip identical b
+                        left += 1
+                    left += 1
+                                        
+                    while left < right and nums[right] == nums[right - 1]: # skip identical c
+                        right -= 1
+                    right -= 1
         return ans

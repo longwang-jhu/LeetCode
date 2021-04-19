@@ -10,26 +10,26 @@
 ###############################################################################
 
 # anagrams -> same char count
-# dict with key = (26 letters count tuple) and value = anagrams
+# dict: key = ('a' count, ..., 'z' count), value = [anagrams]
 # time: O(NK), space: O(NK)
 
 from collections import defaultdict
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         ans = defaultdict(list)
-        for string in strs:
-            count = [0] * 26 # for 26 letters
-            for char in string:
-                count[ord(char) - ord('a')] += 1
-            ans[tuple(count)].append(string)
+        for s in strs:
+            s_count = [0] * 26 # for 26 chars
+            for char in s:
+                s_count[ord(char) - ord('a')] += 1
+            ans[tuple(s_count)].append(s) # append to ans
         return ans.values()
 
 # anagrams -> same ordered string
-# dict with key = ordered string and value = anagrams
+# dict: key = ordered string, value = [anagrams]
 # time: O(NKlogK), space: O(NK)
 
-    def groupAnagrams2(self, strs: List[str]) -> List[List[str]]:
+    def sorted_str_key(self, strs):
         ans = defaultdict(list)
-        for string in strs:
-            ans[tuple(sorted(string))].append(string)
+        for s in strs:
+            ans[tuple(sorted(s))].append(s)
         return ans.values()

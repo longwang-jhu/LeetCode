@@ -5,28 +5,34 @@
 
 ###############################################################################
 
-# longest substring -> sliding window -> use Dict for repeated char position
-# Dict with key = char and val = latest_idx
-# move start_idx if necessary
+# sliding window -> check window_counter
 
+from collections import Counter
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         if not s: return 0
         if len(s) == 1: return 1
         
-        char_dict = dict()
+        # sliding window
         max_len = 0
-        start_idx = 0 # starting index for the current substring
-        for idx, char in enumerate(s):
-            if char in char_dict: # found a repeated char
-                char_prev_idx = char_dict[char]
-                if char_prev_idx + 1 > start_idx: # move start_idx
-                    # set the start idx to the right of the repeated char
-                    start_idx = char_prev_idx + 1
-
-            char_dict[char] = idx # update char idx in char_dict
-                
-            # update max_len
-            max_len = max(max_len, idx - start_idx + 1)
+        window = Counter()
+        
+        left = right = 0
+        while right < len(s):
+            # update window
+            new_char = s[right]
+            window[new_char] += 1
+            
+            # shrink window when exist repeating char
+            while window[new_char] > 1:
+                old_char = s[left]
+                window[old_char] -= 1
+                left += 1
+            
+            # window is good, update ans
+            max_len = max(max_len, right - left + 1)
+            
+            # expand window
+            right += 1
             
         return max_len

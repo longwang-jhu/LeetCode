@@ -12,7 +12,7 @@
 ###############################################################################
 
 # divide and conquer
-# single_path: for passing the root node, can be None
+# single_path: start from curr node, can be None
 # max_path: cannot be None
 
 # Definition for a binary tree node.
@@ -28,15 +28,15 @@ class Solution:
     # return (single_path, max_path)
     def helper(self, root):
         if root == None:
-             return (0, -2**31)
+             return (0, float("-inf"))
         
         l_single_path, l_max_path = self.helper(root.left)
         r_single_path, r_max_path = self.helper(root.right)
         
-        single_path = max(l_single_path, r_single_path) + root.val
+        single_path = max(l_single_path, r_single_path) + root.val # choose left or right
         single_path = max(single_path, 0) # might be better to just be None
         
         max_path = max(l_max_path, r_max_path)
-        max_path = max(max_path, l_single_path + r_single_path + root.val) # connecting root
+        max_path = max(max_path, l_single_path + r_single_path + root.val) # passing curr node
         
         return (single_path, max_path)
