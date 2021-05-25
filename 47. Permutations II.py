@@ -14,24 +14,28 @@ class Solution:
         if not nums or len(nums) == 0: return []
         
         nums.sort()
-        ans = []
-        is_used = [False] * len(nums) # to record if num is used
-        self.dfs(ans, [], nums, is_used)
-        return ans
+        self.ans = []
+        self.holder = []
+        self.used = set()
+        self.nums = nums
+        self.dfs()
+        return self.ans
     
-    def dfs(self, ans, holder, nums, is_used):
-        if len(holder) == len(nums):
-            ans.append(holder.copy())
+    def dfs(self):
+        if len(self.holder) == len(self.nums):
+            self.ans.append(self.holder.copy())
             return
         
         # generate child
-        for i in range(len(nums)):
+        for i in range(len(self.nums)):
             # i) not used
-            if not is_used[i]:
+            if i not in self.used:
                 # ii) first child OR (!= prev) OR (== prev, but prev is used)
-                if i == 0 or nums[i] != nums[i-1] or is_used[i-1]:
-                    holder.append(nums[i])
-                    is_used[i] = True
-                    self.dfs(ans, holder, nums, is_used)
-                    holder.pop()
-                    is_used[i] = False
+                if i == 0 or self.nums[i] != self.nums[i-1] or i - 1 in self.used:
+                    self.holder.append(self.nums[i])
+                    self.used.add(i)
+                    
+                    self.dfs()
+                    
+                    self.holder.pop()
+                    self.used.remove(i)

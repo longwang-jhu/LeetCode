@@ -7,3 +7,18 @@
 
 ###############################################################################
 
+# similar to base 2 -> note -1 = (-2) ** 1 + (-2) ** 0
+
+class Solution:
+    def baseNeg2(self, N: int) -> str:
+        if N == 0: return "0"
+        
+        ans = []
+        while N:
+            N, rem = divmod(N, -2)
+            if rem == -1: # -1 = (-2) ** 1 + (-2) ** 0
+                N += 1
+                rem = 1
+            ans.append(str(rem))
+        
+        return ''.join(ans[::-1])

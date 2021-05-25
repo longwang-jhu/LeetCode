@@ -12,8 +12,8 @@
 
 ###############################################################################
 
-# dp_last_buy[i] = profit for prices[0, ..., i], last trans is buy
-# dp_last_sell[i] = profit for prices[0, ..., i], last trans is sell
+# dp_last_buy[i] = profit for prices[0...i], last trans is buy
+# dp_last_sell[i] = profit for prices[0...i], last trans is sell
 # one trade is one buy + one sell
 
 class Solution:

@@ -11,21 +11,23 @@ class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         if not nums or len(nums) == 0: return []
         
-        ans = []
-        is_used = set()
-        self.dfs(ans, [], nums, is_used)
-        return ans
+        self.nums = nums
+        self.ans = []
+        self.holder = []
+        self.used = set()
+        self.dfs()
+        return self.ans
         
-    def dfs(self, ans, holder, nums, is_used):
-        if len(holder) == len(nums):
-            ans.append(holder.copy())
+    def dfs(self):
+        if len(self.holder) == len(self.nums):
+            self.ans.append(self.holder.copy())
             return
         
         # generate child
-        for num in nums:
-            if num not in is_used: # no reuse
-                holder.append(num)
-                is_used.add(num)
-                self.dfs(ans, holder, nums, is_used)
-                holder.pop()
-                is_used.remove(num)
+        for num in self.nums:
+            if num not in self.used: # no reuse
+                self.holder.append(num)
+                self.used.add(num)
+                self.dfs()
+                self.holder.pop()
+                self.used.remove(num)

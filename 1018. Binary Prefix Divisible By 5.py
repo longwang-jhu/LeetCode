@@ -17,3 +17,11 @@
 
 ###############################################################################
 
+class Solution:
+    def prefixesDivBy5(self, A: List[int]) -> List[bool]:
+        ans = []
+        num = 0
+        for i in range(len(A)):
+            num = num * 2 + A[i]
+            ans.append(num % 5 == 0)
+        return ans

@@ -16,3 +16,20 @@
 
 ###############################################################################
 
+# split by "/" -> append dir_name if necessary and pop ans if dir_name == ".."
+
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        ans = []
+        path = path.split('/')
+        
+        for dir_name in path:
+            if not dir_name or dir_name == ".":
+                continue
+            elif dir_name == "..":
+                if ans:
+                    ans.pop() # pop the most recent directory
+            else:
+                ans.append(dir_name)
+        
+        return '/' + '/'.join(ans)

@@ -9,7 +9,7 @@
 ###############################################################################
 
 # dp[i] = if can break using s[0...i]
-# to update dp[i], check if s[j...i] is word and dp[j] == True
+# update dp[i], check if s[j...i] is word and dp[j-1] == True
 # speed up: stop when len(s[j...i]) > max_word_len
 
 class Solution:
@@ -19,18 +19,17 @@ class Solution:
         for word in wordDict:
             max_word_len = max(max_word_len, len(word))
         
-        # init
-        n = len(s)
-        dp = [False] * n
+        # base
+        dp = [False] * len(s)
         
         # dp
-        for i in range(n):
-            for j in range(i, -1, -1): # j = i-1...0
+        for i in range(len(s)):
+            for j in range(i, -1, -1): # j = i...0
                 # check if s[j...i] is word
                 if i - j + 1 > max_word_len:
-                    break # no need to go furthur
+                    break # no need to go further
                 if (j == 0 or dp[j - 1]) and s[j : i + 1] in wordDict:
                     dp[i] = True
                     break
 
-        return dp[-1]
+        return dp[-1]   

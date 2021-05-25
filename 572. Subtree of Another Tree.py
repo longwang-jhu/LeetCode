@@ -1,11 +1,12 @@
 # https://leetcode.com/problems/subtree-of-another-tree/
 
-# Given two non-empty binary trees s and t, check whether tree t has exactly
-# the same structure and node values with a subtree of s. A subtree of s is a
-# tree consists of a node in s and all of this node's descendants. The tree s
-# could also be considered as a subtree of itself.
+# Given the roots of two binary trees root and subRoot, return true if there is
+# a subtree of root with the same structure and node values of subRoot and
+# false otherwise.
 
-# Example 1: Given tree s:
+# A subtree of a binary tree tree is a tree that consists of a node in tree and
+# all of this node's descendants. The tree tree could also be considered as a
+# subtree of itself.
 
 ###############################################################################
 

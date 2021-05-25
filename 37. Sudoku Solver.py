@@ -8,3 +8,41 @@
 
 ###############################################################################
 
+# dfs with return
+
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        self.board = board
+        self.dfs(0, 0)
+        return
+    
+    def dfs(self, i, j):
+        if i == 9:
+            return True      
+        if j == 9:
+            return self.dfs(i + 1, 0) # move the next row
+        if self.board[i][j] != ".":
+            return self.dfs(i, j + 1) # move to next column
+        
+        for val in range(1, 10):
+            if not self.is_valid(i, j, val):
+                continue
+            else: # valid to put val at (i,j)
+                self.board[i][j] = str(val)
+                if self.dfs(i, j + 1):
+                    return True
+                self.board[i][j] = "."
+        return False
+    
+    def is_valid(self, i, j, val): # check if can put val at (i,j)
+        for k in range(9):
+            if self.board[i][k] == str(val): # ith row
+                return False
+            if self.board[k][j] == str(val): # jth col
+                return False
+            if self.board[i//3 * 3 + k//3][j//3 * 3 + k%3] == str(val): # 3x3 bloack
+                return False
+        return True

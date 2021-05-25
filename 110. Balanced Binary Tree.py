@@ -10,7 +10,9 @@
 ###############################################################################
 
 # divide and conquer
-# check: 1) root.left is balanced; 2) root.right is balanced; 3) | len(root.left) - len(root.right) | <= 1
+# check: 1) root.left is balanced
+# 2) root.right is balanced
+# 3) | len(root.left) - len(root.right) | <= 1
 
 
 # Definition for a binary tree node.
@@ -24,8 +26,7 @@ class Solution:
         return self.max_depth(root) != -1
         
     def max_depth(self, root):
-        if root == None:
-            return 0
+        if root == None: return 0
         
         l_depth = self.max_depth(root.left)
         r_depth = self.max_depth(root.right)

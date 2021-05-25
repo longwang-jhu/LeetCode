@@ -10,33 +10,29 @@
 
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        m, n = len(nums1), len(nums2)
-        if (m + n) % 2 == 1: # odd
-            return self.find_kth(nums1, 0, nums2, 0, (m + n) // 2 + 1)
+        n1, n2 = len(nums1), len(nums2)
+        if (n1 + n2) % 2 == 1: # odd
+            return self.find_kth(nums1, 0, nums2, 0, (n1 + n2) // 2 + 1)
         else: # even
-            return (self.find_kth(nums1, 0, nums2, 0, (m + n) // 2) 
-                    + self.find_kth(nums1, 0, nums2, 0, (m + n) // 2 + 1)) / 2
+            return (self.find_kth(nums1, 0, nums2, 0, (n1 + n2) // 2) 
+                    + self.find_kth(nums1, 0, nums2, 0, (n1 + n2) // 2 + 1)) / 2
     
-    # find kth number of A[A_start:] and B[B_start]
+    # find kth number of A[A_start...] and B[B_start...]
     def find_kth(self, A, A_start, B, B_start, k):
         # exit case
-        if A_start >= len(A): # no more A
+        if A_start > len(A) - 1: # no more A
             return B[B_start + k - 1] # get kth number in B
-        if B_start >= len(B): # no more B
+        if B_start > len(B) - 1: # no more B
             return A[A_start + k - 1] # get kth number in A       
         if k == 1:
             return min(A[A_start], B[B_start])
         
         # find k//2th number of A and B
-        if A_start + k // 2 - 1 < len(A):
-            A_val = A[A_start + k // 2 - 1]
-        else:
-            A_val = float('inf')
-
-        if B_start + k // 2 - 1 < len(B):
-            B_val = B[B_start + k // 2 - 1]
-        else:
-            B_val = float('inf')
+        A_curr = A_start + k // 2 - 1
+        B_curr = B_start + k // 2 - 1
+        
+        A_val = A[A_curr] if A_curr < len(A) else float('inf')
+        B_val = B[B_curr] if B_curr < len(B) else float('inf')
         
         # dump the smaller one (move the start index)
         if A_val < B_val: # dump k//2 numbers of A

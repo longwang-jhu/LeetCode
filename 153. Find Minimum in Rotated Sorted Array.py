@@ -11,3 +11,19 @@
 
 ###############################################################################
 
+# binary search: [first part | second part]
+# determine which part mid is in
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        if len(nums) == 1: return nums[0]
+        
+        left, right = 0, len(nums) - 1
+        while left + 1 < right:
+            mid = left + (right - left) // 2
+            if nums[mid] > nums[right]: # mid is in the first part
+                left = mid
+            else: # num[mid] < mid[right], mid is in the second part
+                right = mid
+        
+        return min(nums[left], nums[right])

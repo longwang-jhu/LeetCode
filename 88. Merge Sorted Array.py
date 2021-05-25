@@ -9,23 +9,25 @@
 
 ###############################################################################
 
-# put in the largest number first from right
+# start from the last numbers, move the larger one to end
 
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         """
         Do not return anything, modify nums1 in-place instead.
         """
-        i, j, k = m - 1, n - 1, m + n - 1
+        i1, i2, end = m - 1, n - 1, m + n - 1
         
-        while i >= 0 and j >= 0:
-            if nums1[i] >= nums2[j]:
-                nums1[k] = nums1[i]
-                i -= 1
+        while i1 >= 0 and i2 >= 0:
+            if nums1[i1] >= nums2[i2]: # move nums[i1] to end
+                nums1[end] = nums1[i1]
+                i1 -= 1
             else:
-                nums1[k] = nums2[j]
-                j -= 1
-            k -= 1
+                nums1[end] = nums2[i2]
+                i2 -= 1
+            end -= 1
         
-        if i == -1 and j >= 0:
-            nums1[:j+1] = nums2[:j+1]
+        if i1 == -1 and i2 >= 0: # no more nums1
+            nums1[:i2+1] = nums2[:i2+1]
+        
+        return

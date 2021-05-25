@@ -6,7 +6,7 @@
 
 ###############################################################################
 
-# dfs(root, path, ans)
+# dfs(node)
 
 # Definition for a binary tree node.
 # class TreeNode:
@@ -16,18 +16,23 @@
 #         self.right = right
 class Solution:
     def binaryTreePaths(self, root: TreeNode) -> List[str]:
-        if not root:
-            return []
+        if not root: return []
         
-        ans = []
-        self.dfs(root, '', ans)
-        return ans
+        self.ans = []
+        self.holder = [str(root.val)]
+        self.dfs(root)
+        return self.ans
     
-    def dfs(self, root, path, ans):
-        if not root.left and not root.right:
-            ans.append(path + str(root.val))
+    def dfs(self, node):
+        if not node.left and not node.right:
+            self.ans.append("->".join(self.holder))
+            return
         
-        if root.left:
-            self.dfs(root.left, path + str(root.val) + '->', ans)
-        if root.right:
-            self.dfs(root.right, path + str(root.val) + '->', ans)
+        if node.left:
+            self.holder.append(str(node.left.val))
+            self.dfs(node.left)
+            self.holder.pop()
+        if node.right:
+            self.holder.append(str(node.right.val))
+            self.dfs(node.right)
+            self.holder.pop()

@@ -20,7 +20,8 @@ class Solution:
         self.board = board
         self.word = word
         self.m, self.n = len(self.board), len(self.board[0])
-        self.is_visited = set()
+        self.visited = set()
+        self.dirs = [(-1,0), (1,0), (0,-1), (0,1)]
         
         # start from every pos
         for i in range(self.m):
@@ -30,19 +31,23 @@ class Solution:
         return False
     
     def dfs(self, char_idx, i, j):
-        if char_idx == len(self.word):
-            return True
-        
         # check valid
-        if i < 0 or i >= self.m or j < 0 or j >= self.n \
-        or (i,j) in self.is_visited or self.word[char_idx] != self.board[i][j]:
+        if self.word[char_idx] != self.board[i][j]:
             return False
         
-        self.is_visited.add((i,j))
-        found = self.dfs(char_idx + 1, i - 1, j) \
-        or self.dfs(char_idx + 1, i + 1, j) \
-        or self.dfs(char_idx + 1, i, j - 1) \
-        or self.dfs(char_idx + 1, i, j + 1)
-        self.is_visited.remove((i,j))
+        if char_idx == len(self.word) - 1: # last char
+            return True
+        
+        self.visited.add((i,j))
+        
+        found = False
+        for dir_idx in range(4):
+            i_next = i + self.dirs[dir_idx][0]
+            j_next = j + self.dirs[dir_idx][1]
+            if (0 <= i_next < self.m and 0 <= j_next < self.n
+               and (i_next, j_next) not in self.visited):
+                found = found or self.dfs(char_idx + 1, i_next, j_next)
+        
+        self.visited.remove((i,j))
         
         return found

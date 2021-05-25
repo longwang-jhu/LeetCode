@@ -12,3 +12,21 @@
 
 ###############################################################################
 
+# dp[i] = max money in nums[0...i-1]
+# dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])
+
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1: return nums[0]
+
+        # base
+        n = len(nums)
+        dp = [0] * (n + 1)
+        dp[1] = nums[0]
+        
+        # dp
+        for i in range(2, n + 1):
+            dp[i] = max(dp[i-1], # not rob nums[i-1]
+                        dp[i-2] + nums[i-1]) # rob nums[i-1]
+        
+        return dp[-1]

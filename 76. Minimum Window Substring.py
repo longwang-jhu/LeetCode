@@ -35,8 +35,9 @@ class Solution:
             # shrink window
             while n_valid_chars == len(target):
                 # update min_len
-                if right - left + 1 < min_len:
-                    min_len = right - left + 1
+                curr_len = right - left + 1
+                if curr_len < min_len:
+                    min_len = curr_len
                     min_len_start = left
 
                 # update window dict by removing s[left]

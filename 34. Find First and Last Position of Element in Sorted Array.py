@@ -27,6 +27,8 @@ class Solution:
                 right = mid
             else: # nums[mid] < target
                 left = mid        
+        
+        # return
         if nums[left] == target:
             start_idx = left
         elif nums[right] == target:
@@ -43,6 +45,7 @@ class Solution:
             else: # nums[mid] > target
                 right = mid
         
+        # return
         if nums[right] == target:
             end_idx = right
         elif nums[left] == target:
