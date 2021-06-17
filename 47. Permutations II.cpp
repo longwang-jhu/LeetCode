@@ -5,34 +5,33 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// dfs, sort first
+// avoid duplicate: first child, or != prev, or == prev but prev is used
 class Solution {
 public:
-    vector<vector<int>> ans;
-    vector<int> holder;
     vector<vector<int>> permuteUnique(vector<int>& nums) {
         sort(nums.begin(), nums.end());
-        
-        vector<bool> used(nums.size(), false);
-        dfs(nums, used);
+        used = vector<bool>(nums.size(), false);
+        dfs(nums);
         return ans;
     }
-    
-    void dfs(const vector<int>& nums, vector<bool> used) {
+private:
+    vector<bool> used;
+    vector<int> holder;
+    vector<vector<int>> ans;
+    void dfs(const vector<int>& nums) {
         if (holder.size() == nums.size()) {
-            ans.push_back(holder);
-            return;
+            ans.push_back(holder); return;
         }
-        
         for (int i = 0; i < nums.size(); ++i) {
-            if (!used[i]) { // must not used
-                // first child, or != prev, or == prev but prev is used
-                if (i == 0 or nums[i] != nums[i-1] or used[i-1]) {
-                    holder.push_back(nums[i]);
-                    used[i] = true;
-                    dfs(nums, used);
-                    holder.pop_back();
-                    used[i] = false;
-                }
+            if (used[i]) continue;
+            // first child, or != prev, or == prev but prev is used
+            if (i == 0 || nums[i] != nums[i-1] || used[i-1]) {
+                holder.push_back(nums[i]);
+                used[i] = true;
+                dfs(nums);
+                holder.pop_back();
+                used[i] = false;
             }
         }
         return;

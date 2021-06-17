@@ -11,18 +11,17 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// nums[...left | mid | right...]
-// note: must ++mid if swap with left
+// nums[...l | m | r...]
+// note: must ++m if swapped with l
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        if (nums.size() == 1) return;
-        
-        int left = 0, mid = 0, right = nums.size() - 1;
-        while (mid <= right) {
-            if (nums[mid] == 0) swap(nums[left++], nums[mid++]);
-            else if (nums[mid] == 2) swap(nums[mid], nums[right--]);
-            else ++mid;
+        if (nums.size() == 1) return;       
+        int l = 0, m = 0, r = nums.size() - 1;
+        while (m <= r) {
+            if (nums[m] == 0) swap(nums[l++], nums[m++]);
+            else if (nums[m] == 2) swap(nums[m], nums[r--]);
+            else ++m;
         }
         return;
     }

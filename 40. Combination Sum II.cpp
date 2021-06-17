@@ -10,29 +10,28 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// dfs, sort first
 class Solution {
 public:
-    vector<vector<int>> ans;
-    vector<int> holder;
-    void dfs(int pos, int remainder, vector<int>& candidates) {
-        if (remainder == 0) {
-            ans.push_back(holder);
-            return;
-        }
-        for (int i = pos; i < candidates.size(); ++i) {
-            if (i == pos or candidates[i] != candidates[i-1]) { // avoid duplicates
-                if (candidates[i] <= remainder) {
-                    holder.push_back(candidates[i]);
-                    dfs(i + 1, remainder - candidates[i], candidates);
-                    holder.pop_back();
-                }
-            }
-        }
-    }
-    
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         sort(candidates.begin(), candidates.end());
-        dfs(0, target, candidates);
+        dfs(0, candidates, target);
         return ans;
+    }
+private:
+    vector<int> holder;
+    vector<vector<int>> ans;
+    void dfs(int pos, const vector<int>& nums, int rem) {
+        if (rem == 0) {
+            ans.push_back(holder); return;
+        }
+        for (int i = pos; i < nums.size(); ++i) {
+            if (i > pos && nums[i] == nums[i-1]) continue;
+            if (nums[i] <= rem) {
+                holder.push_back(nums[i]);
+                dfs(i + 1, nums, rem - nums[i]);
+                holder.pop_back();
+            }
+        }
     }
 };

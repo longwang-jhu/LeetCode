@@ -8,25 +8,26 @@
 // dfs
 class Solution {
 public:
-    vector<vector<int>> ans;
-    vector<int> holder;
-    
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<bool> visited(nums.size(), false);
-        dfs(nums, visited);
+        n = nums.size();
+        visited = vector<bool>(n, false);
+        dfs(nums);
         return ans;
     }
-    
-    void dfs(const vector<int> &nums, vector<bool> &visited) {
-        if (holder.size() == nums.size()) {
-            ans.push_back(holder);
-            return;
+private:
+    int n;
+    vector<bool> visited;
+    vector<int> holder;
+    vector<vector<int>> ans;
+    void dfs(const vector<int>& nums) {
+        if (holder.size() == n) {
+            ans.push_back(holder); return;
         }
-        for (int i = 0; i < nums.size(); ++i) {
+        for (int i = 0; i < n; ++i) {
             if (!visited[i]) {
                 visited[i] = true;
                 holder.push_back(nums[i]);
-                dfs(nums, visited);
+                dfs(nums);
                 holder.pop_back();
                 visited[i] = false;
             }

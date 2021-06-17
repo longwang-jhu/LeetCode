@@ -9,28 +9,26 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // binary search
+// if m is even check nums[m] == nums[m+1]
+// if m is odd check nums[m] == nums[m-1]
 class Solution {
 public:
     int singleNonDuplicate(vector<int>& nums) {
-        if (nums.size() == 1) return nums[0];
-        
-        int left = 0, right = nums.size() - 1;
-        while (left + 1 < right) {
-            int mid = left + (right - left) / 2;
-            
-            if (mid % 2 == 0) { // mid is even
-                if (nums[mid] == nums[mid + 1]) left = mid + 2;
-                else right = mid;
-            } else { // mid is odd
-                if (nums[mid] == nums[mid - 1]) left = mid + 1;
-                else right = mid;
+        if (nums.size() == 1) return nums[0];        
+        int l = 0, r = nums.size() - 1;
+        while (l + 1 < r) {
+            int m = l + (r - l) / 2;
+            if (m % 2 == 0) { // m is even
+                if (nums[m] == nums[m + 1]) l = m + 2;
+                else r = m;
+            } else { // m is odd
+                if (nums[m] == nums[m - 1]) l = m + 1;
+                else r = m;
             }
         }
-        
-        if (right == nums.size() - 1) {
-            return (nums[left] == nums[left - 1]) ? nums[right] : nums[left];
-        } else {
-            return (nums[right] == nums[right + 1]) ? nums[left] : nums[right];
+        if (r == nums.size() - 1) {
+            return (nums[l] == nums[l - 1]) ? nums[r] : nums[l];
         }
+        return (nums[r] == nums[r + 1]) ? nums[l] : nums[r];
     }
 };

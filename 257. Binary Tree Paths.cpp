@@ -19,21 +19,18 @@
  */
 class Solution {
 public:
-    vector<string> ans;
-    vector<int> holder;
-    
     vector<string> binaryTreePaths(TreeNode* root) {
         holder.push_back(root->val);
         dfs(root);       
         return ans;
     }
-    
+private:
+    vector<int> holder;
+    vector<string> ans;
     void dfs(TreeNode* node) {
         if (!node->left and !node->right) {
-            ans.push_back(toPath(holder));
-            return;
+            ans.push_back(toPath(holder)); return;
         }
-        
         if (node->left) {
             holder.push_back(node->left->val);
             dfs(node->left);
@@ -46,11 +43,10 @@ public:
         }
         return;
     }
-    
     string toPath(const vector<int>& holder) {
-        string path = to_string(holder.front());
-        for (auto it = holder.begin() + 1; it != holder.end(); ++it) {
-            path += "->" + to_string(*it);
+        string path = to_string(holder[0]);
+        for (int i = 1; i < holder.size(); ++i) {
+            path += "->" + to_string(holder[i]);
         }
         return path;
     }

@@ -12,20 +12,20 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// sort, put highest people front
+// sort, put highest people in front, insert to ans at idx k
 class Solution {
 public:
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
-        sort(people.begin(), people.end(), [](vector<int>& a, vector<int>& b) {
-            if (a[0] != b[0]) return a[0] > b[0];
-            return a[1] < b[1];
-        });
+        sort(people.begin(), people.end(),
+             [](vector<int>& a, vector<int>& b) {
+                 if (a[0] == b[0]) return a[1] < b[1];
+                 return a[0] > b[0];
+             });
         
-        vector<vector<int>> sortedPeople;
-        for (auto &p : people) {
-            int k = p[1];
-            sortedPeople.insert(sortedPeople.begin() + k, p);
+        vector<vector<int>> ans;
+        for (const auto& p : people) {
+            ans.insert(ans.begin() + p[1], p);
         }
-        return sortedPeople;
+        return ans;
     }
 };

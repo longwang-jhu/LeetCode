@@ -19,24 +19,25 @@
 class Solution {
 public:
     int findCircleNum(vector<vector<int>>& isConnected) {
+        n = isConnected.size();
+        visited = vector<bool>(n, false);
         int ans = 0;
-        vector<bool> visited(isConnected.size(), false);
-        for (int i = 0; i < isConnected.size(); ++i) {
+        for (int i = 0; i < n; ++i) {
             if (!visited[i]) {
-                dfs(isConnected, visited, i);
-                ++ans;
+                dfs(i, isConnected); ++ans;
             }
         }
         return ans;
     }
-    
-    void dfs(const vector<vector<int>> &isConnected,
-             vector<bool> &visited, int i) {
+private:
+    int n;
+    vector<bool> visited;
+    void dfs(int i, const vector<vector<int>>& isConnected) {
         visited[i] = true;
-        // generate children
-        for (int j = 0; j < isConnected.size(); ++j) {
-            if (j != i and !visited[j] and isConnected[i][j] == 1) {
-                dfs(isConnected, visited, j);
+        for (int j = 0; j < n; ++j) { // generate children
+            if (j == i) continue;
+            if (!visited[j] && isConnected[i][j] == 1) {
+                dfs(j, isConnected);
             }
         }
         return;

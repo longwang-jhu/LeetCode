@@ -13,48 +13,38 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // dfs, place by row
-// diag: (2n+1) lines, row - col + n - 1 = i, counting from top-right
-// antiDiag: (2n+1) lines, row + col = i, counting from top-left
-
+// diag: (2n+1) lines, i = row - col + n - 1, counting from top-right
+// antiDiag: (2n+1) lines, i = row + col, counting from top-left
 class Solution {
 public:
-    vector<vector<string>> ans;
-    vector<string> holder;
-    
     vector<vector<string>> solveNQueens(int n) {
-        vector<bool> colUsed(n, false);
-        vector<bool> diagUsed(2 * n + 1, false);
-        vector<bool> antiDiagUsed(2 * n + 1, false);
-        
-        dfs(n, colUsed, diagUsed, antiDiagUsed, 0);
+        colUsed = vector<bool>(n, false);
+        diagUsed = vector<bool>(2 * n + 1, false);
+        antiDiagUsed = vector<bool>(2 * n + 1, false);
+        dfs(0, n);
         return ans;
     }
-    
-    void dfs(const int n, vector<bool> &colUsed, vector<bool> &diagUsed,
-             vector<bool> &antiDiagUsed, int row) {
+private:
+    vector<bool> colUsed, diagUsed, antiDiagUsed;
+    vector<string> holder;
+    vector<vector<string>> ans;
+    void dfs(int row, const int& n) {
         if (row == n) {
-            ans.push_back(holder);
-            return;
+            ans.push_back(holder); return;
         }
-        
-        // generate children
-        for (int col = 0; col < n; ++col){
-            if (!colUsed[col] and !diagUsed[row - col + n - 1]
-                and !antiDiagUsed[row + col]) {
+        for (int col = 0; col < n; ++col){ // children
+            if (!colUsed[col] && !diagUsed[row - col + n - 1]
+                && !antiDiagUsed[row + col]) {
                 // place queen
                 string holderRow(n, '.');
                 holderRow[col] = 'Q';
                 holder.push_back(holderRow);
-
-                // update free position
                 colUsed[col] = true;
                 diagUsed[row - col + n - 1] = true;
                 antiDiagUsed[row + col] = true;
-                
                 // go to child
-                dfs(n, colUsed, diagUsed, antiDiagUsed, row + 1);
-                
-                // remore queen
+                dfs(row + 1, n);
+                // remove queen
                 holder.pop_back();
                 colUsed[col] = false;
                 diagUsed[row - col + n - 1] = false;

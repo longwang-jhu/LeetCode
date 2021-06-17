@@ -13,34 +13,32 @@
 // dfs
 class Solution {
 public:
-    vector<vector<int>> dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
-    
     int maxAreaOfIsland(vector<vector<int>>& grid) {
-        if (grid.empty() or grid[0].empty()) return 0;
-        
+        if (grid.empty() || grid[0].empty()) return 0;
+        m = grid.size(); n = grid[0].size();
         int maxArea = 0;
-        for (int i = 0; i < grid.size(); ++i) {
-            for (int j = 0; j < grid[0].size(); ++j) {
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
                 if (grid[i][j] == 1) {
-                    maxArea = max(maxArea, dfs(grid, i, j));
+                    maxArea = max(maxArea, dfs(i, j, grid));
                 }
             }
         }
         return maxArea;
     }
-    
-    int dfs(vector<vector<int>> &grid, int i, int j) {
+private:
+    int m, n;
+    vector<pair<int, int>> dirs = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+    int dfs(int i, int j, vector<vector<int>>& grid) {
         grid[i][j] = 0;
         int area = 1;
-        for (int dirIdx = 0; dirIdx < 4; ++dirIdx) {
-            int iNext = i + dirs[dirIdx][0];
-            int jNext = j + dirs[dirIdx][1];
-            // check if child is legal
-            if (iNext >=0 and iNext < grid.size() and jNext >= 0 and jNext < grid[0].size()
-               and grid[iNext][jNext] == 1) {
-                area += dfs(grid, iNext, jNext);
+        for (const auto& [iIncr, jIncr] : dirs) {
+            int iNext = i + iIncr, jNext = j + jIncr;
+            if (iNext >= 0 && iNext < m && jNext >= 0 && jNext < n
+               && grid[iNext][jNext] == 1) {
+                area += dfs(iNext, jNext, grid);
             }
-        }        
+        }
         return area;
     }
 };

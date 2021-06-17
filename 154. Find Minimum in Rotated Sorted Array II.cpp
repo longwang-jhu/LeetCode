@@ -13,21 +13,17 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// binary search
+// binary search, [1st part | 2nd part]
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-        int left = 0, right = nums.size() - 1;
-        while (left + 1 < right) {
-            int mid = left + (right - left) / 2;
-            // mid is in 1st part
-            if (nums[mid] > nums[right]) left = mid;
-            // mid is in 2nd part
-            else if (nums[mid] < nums[right]) right = mid;
-            // cannot decide
-            else --right;
+        int l = 0, r = nums.size() - 1;
+        while (l + 1 < r) {
+            int m = l + (r - l) / 2;
+            if (nums[m] > nums[r]) l = m; // m in 1st part
+            else if (nums[m] < nums[r]) r = m; // m in 2nd part
+            else --r; // undetermined
         }
-        
-        return min(nums[left], nums[right]);
+        return min(nums[l], nums[r]);
     }
 };

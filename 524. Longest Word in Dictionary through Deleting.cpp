@@ -12,11 +12,12 @@
 class Solution {
 public:
     string findLongestWord(string s, vector<string>& dictionary) {
-        sort(dictionary.begin(), dictionary.end(), [](string& a, string& b) {
-            return (a.size() == b.size()) ? (a < b) : (a.size() > b.size());
-        });
+        sort(dictionary.begin(), dictionary.end(),
+             [](string& a, string& b) {
+                 return (a.size() == b.size()) ? (a < b) : (a.size() > b.size());
+             });
         
-        for (auto &key : dictionary) {
+        for (auto& key : dictionary) {
             if (isSubstr(s, key)) return key;
         }
         return {};

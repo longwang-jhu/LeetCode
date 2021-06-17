@@ -12,7 +12,7 @@ class Solution {
 public:
     vector<int> partitionLabels(string s) {
         if (s.empty()) return {};
-        if (s.size() == 1) return vector<int>(1,1);
+        if (s.size() == 1) return vector<int>{1};
         
         // lastPos[char] = latest index of char
         unordered_map<char, int> lastPos;
@@ -21,9 +21,7 @@ public:
         vector<int> ans;
         int anchor = 0, frontier = 0;
         for (int i = 0; i < s.size(); ++i) {
-            char c = s[i];
-            // keep updating frontier
-            frontier = max(frontier, lastPos[c]);
+            frontier = max(frontier, lastPos[s[i]]);
             if (i == frontier) {
                 ans.push_back(frontier - anchor + 1);
                 anchor = frontier + 1;

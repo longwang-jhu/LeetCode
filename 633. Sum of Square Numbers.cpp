@@ -9,9 +9,9 @@
 class Solution {
 public:
     bool judgeSquareSum(int c) {
-        long int left = 0, right = sqrt(c), total;
+        int left = 0, right = sqrt(c);
         while (left <= right) {
-            total = left * left + right * right;
+            long int total = (long int) left * left + right * right;
             if (total == c) return true;
             if (total < c) ++left;
             else --right;

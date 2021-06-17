@@ -11,39 +11,35 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// use dfs to mark 1st island, and bfs to reach 2nd island
 class Solution {
 public:
-    vector<pair<int, int>> dirs = {{0,-1}, {0,1}, {-1,0}, {1,0}};
-    queue<pair<int, int>> points;
-    
     int shortestBridge(vector<vector<int>>& grid) {
-        int m = grid.size(), n = grid[0].size();       
-        // use dfs to find first island and mark it as -1
-        bool found1st = false;
-        for (int x = 0; x < m; ++x) {
-            if (found1st) break;
-            for (int y = 0; y < n; ++y) {
-                if (grid[x][y] == 1) {
-                    dfs(grid, x, y);
-                    found1st = true;
-                    break;
+        m = grid.size(); n = grid[0].size();
+        bool found1 = false;
+        for (int i = 0; i < m; ++i) {
+            if (found1) break;
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] == 1) {
+                    dfs(i, j, grid);
+                    found1 = true; break;
                 }
             }
         }        
-        // use bfs to reach for second island
+        // use bfs to reach 2nd island
         int ans = 0;
-        while (!points.empty()) {
-            int nThisLayer = points.size();
-            while (nThisLayer--) {
-                auto [x, y] = points.front(); points.pop();
-                for (int i = 0; i < 4; ++i) {
-                    int xNext = x + dirs[i].first;
-                    int yNext = y + dirs[i].second;
-                    if (xNext >= 0 and xNext < m and yNext >= 0 and yNext < n) {
-                        if (grid[xNext][yNext] == 1) return ans; // reach the 2nd island
-                        if (grid[xNext][yNext] == 0) {
-                            grid[xNext][yNext] = -1;
-                            points.push({xNext, yNext});
+        while (!island1.empty()) {
+            int nCurrLayer = island1.size();
+            while (nCurrLayer--) {
+                auto [i, j] = island1.front(); island1.pop();
+                for (const auto& [iIncr, jIncr] : dirs) {
+                    int iNext = i + iIncr, jNext = j + jIncr;
+                    if (iNext >= 0 && iNext < m
+                        && jNext >= 0 && jNext < n) {
+                        if (grid[iNext][jNext] == 1) return ans;
+                        if (grid[iNext][jNext] == 0) {
+                            grid[iNext][jNext] = -1;
+                            island1.push({iNext, jNext});
                         }
                     }
                 }
@@ -52,16 +48,18 @@ public:
         }
         return 0;
     }
-    
-    void dfs(vector<vector<int>>& grid, int x, int y) {
-        grid[x][y] = -1; // mark for first island
-        points.push({x, y});
-        for (int i = 0; i < 4; ++i) {
-            int xNext = x + dirs[i].first;
-            int yNext = y + dirs[i].second;
-            if (xNext >= 0 and xNext < grid.size() and yNext >= 0 and yNext < grid[0].size()
-                and grid[xNext][yNext] == 1) {
-                dfs(grid, xNext, yNext);
+private:
+    int m, n;
+    vector<pair<int, int>> dirs = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+    queue<pair<int, int>> island1;
+    void dfs(int i, int j, vector<vector<int>>& grid) {
+        grid[i][j] = -1; // mark for 1st island
+        island1.push({i, j});
+        for (const auto& [iIncr, jIncr] : dirs) {
+            int iNext = i + iIncr, jNext = j + jIncr;
+            if (iNext >= 0 && iNext < m && jNext >= 0 && jNext < n
+                && grid[iNext][jNext] == 1) {
+                dfs(iNext, jNext, grid);
             }
         }
         return;

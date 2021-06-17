@@ -13,59 +13,60 @@
 // bfs to find length, dfs to find all sequences
 class Solution {
 public:
-    vector<vector<string>> ans;
-    vector<string> holder;
-    
     vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
         unordered_set<string> availWords;
-        for (string& word : wordList) availWords.insert(word); availWords.erase(beginWord);
+        for (const string& word : wordList) availWords.insert(word);
+        availWords.erase(beginWord);
         if (availWords.find(endWord) == availWords.end()) return {};
         
-        // nextWords[word] = set of next words, useful for dfs
-        unordered_map<string, unordered_set<string>> nextWords;
         queue<string> todo; todo.push(beginWord);
-        bool foundByThisLayer = false;
-        while(!todo.empty() and !foundByThisLayer) {
-            int nThisLayer = todo.size();
-            unordered_set<string> usedWordsThisLayer;
-            while (nThisLayer--) {
-                string thisWord = todo.front(); todo.pop();
-                bool foundByThisWord = false; // for early stopping
-                for (int i = 0; i < thisWord.size(); ++i) { // change every index
-                    if (foundByThisWord) break;
-                    string nextWord = thisWord; 
-                    for (int j = 0; j < 26; ++j) { // change word[i] to 'a'--'z'
+        bool found = false;
+        while(!todo.empty() and !found) {
+            int nCurrLayer = todo.size();
+            unordered_set<string> usedWordsCurrLayer;
+            while (nCurrLayer--) {
+                string currWord = todo.front(); todo.pop();
+                bool foundByCurrWord = false; // for early stopping
+                for (int i = 0; i < currWord.size(); ++i) { // change every index
+                    if (foundByCurrWord) break;
+                    string nextWord = currWord;
+                    for (int j = 0; j < 26; ++j) { // change currWord[i] to 'a'--'z'
                         nextWord[i] = 'a' + j;
-                        if (nextWord == thisWord) continue;
-                        if (availWords.find(nextWord) != availWords.end()) { // legal word
-                            usedWordsThisLayer.insert(nextWord);
-                            nextWords[thisWord].insert(nextWord);
+                        if (nextWord[i] == currWord[i]) continue;
+                        if (availWords.find(nextWord) != availWords.end()) { // legal child
+                            usedWordsCurrLayer.insert(nextWord);
+                            wordsMap[currWord].insert(nextWord); // add to wordsMap
                             todo.push(nextWord);
                             if (nextWord == endWord) { 
-                                foundByThisWord = true; foundByThisLayer = true; break;
+                                foundByCurrWord = true; found = true;
+                                break;
                             }
                         }
                     }
                 }
             }
             // remove used words from availWords
-            for (string word : usedWordsThisLayer) availWords.erase(word);
+            for (const string& word : usedWordsCurrLayer) availWords.erase(word);
         }
-        if (!foundByThisLayer) return {};
+        if (!found) return {};
         // dfs to find all paths
         holder.push_back(beginWord);
-        dfs(endWord, nextWords);
+        dfs(endWord);
         return ans;
     }
-    
-    void dfs(const string& endWord, unordered_map<string, unordered_set<string>>& nextWords) {
+private:
+    // wordsMap[word] = set of next words, useful for dfs
+    unordered_map<string, unordered_set<string>> wordsMap;
+    vector<string> holder;
+    vector<vector<string>> ans;
+    void dfs(const string& endWord) {
         if (holder.back() == endWord) {
             ans.push_back(holder); return;
         }
-        string thisWord = holder.back();
-        for (auto &nextWord : nextWords[thisWord]) {
+        string currWord = holder.back();
+        for (const auto& nextWord : wordsMap[currWord]) {
             holder.push_back(nextWord);
-            dfs(endWord, nextWords);
+            dfs(endWord);
             holder.pop_back();
         }
         return;

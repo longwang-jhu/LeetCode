@@ -15,17 +15,14 @@ class Solution {
 public:
     int mySqrt(int x) {
         if (x <= 1) return x;
-        
-        long int left = 1, right = x / 2, mid;
-        while (left + 1 < right) {
-            mid = left + (right - left) / 2;
-            if (mid * mid == x) return mid;
-            
-            if (mid * mid < x) left = mid;
-            else right = mid;
+        int l = 1, r = x / 2;
+        while (l + 1 < r) {
+            int m = l + (r - l) / 2;
+            if (m == x / m) return m;
+            if (m < x / m) l = m;
+            else r = m;
         }
-        
-        // left * left <= x <= right * right
-        return (right * right <= x) ? right : left;
+        // l * l <= x <= r * r
+        return (r > x / r) ? l : r;
     }
 };

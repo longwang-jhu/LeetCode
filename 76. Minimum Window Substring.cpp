@@ -11,53 +11,37 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// sliding window
+// sliding window, use hashMap for comparison
 class Solution {
 public:
     string minWindow(string s, string t) {
-        // record t
-        unordered_map<char, int> target;
-        for (char &c : t) ++target[c];
+        unordered_map<char, int> window, target;
+        for (const auto& c : t) ++target[c];
         
-        // sliding window
-        unordered_map<char, int> window;
-        
-        int minLen = INT_MAX, currLen, startPos;
-        char newChar, oldChar;
-        int nValid = 0; // number of valid chars
-        
-        int left = 0, right = 0;
-        while (right < s.size()) {
+        int minLen = INT_MAX, i, left = 0, right = 0, nValid = 0;
+        for (int left = 0, right = 0; right < s.size(); ++right) {
             // update window
-            newChar = s[right];
+            char newChar = s[right];
             if (target.find(newChar) != target.end()) {
                 ++window[newChar];
                 if (window[newChar] == target[newChar]) ++nValid;
             }
-            
             // shrink window
             while (nValid == target.size()) {
                 // update minLen
-                currLen = right - left + 1;
-                if (currLen < minLen) {
-                    minLen = currLen;
-                    startPos = left;
+                int currLen = right - left + 1;
+                if (minLen > currLen) {
+                    minLen = currLen; i = left;
                 }
-                
-                // remove oldChar from window
-                oldChar = s[left];
+                char oldChar = s[left];
                 if (target.find(oldChar) != target.end()) {
                     if (window[oldChar] == target[oldChar]) --nValid;
                     --window[oldChar];
                 }
                 ++left;
             }
-            
-            // expand window
-            ++right;
         }
-        
         if (minLen == INT_MAX) return {};
-        return s.substr(startPos, minLen);
+        return s.substr(i, minLen);
     }
 };

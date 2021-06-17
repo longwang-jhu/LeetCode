@@ -21,19 +21,17 @@ class Solution {
 public:
     int findMinArrowShots(vector<vector<int>>& points) {
         if (points.empty()) return 0;
+        sort(points.begin(), points.end(),
+             [](vector<int>& a, vector<int>& b) {
+                 return a[1] < b[1];
+             });
         
-        sort(points.begin(), points.end(), [](vector<int>& a, vector<int>&b) {
-            return a[1] < b[1];
-        });
-        
-        int nonOverlap = 1;
-        int i = 1, anchor = 0;
-        while (i < points.size()) {
+        int nonOverlap = 1, anchor = 0, i = 1;
+        for (int i = 1; i < points.size(); ++i) {
             if (points[anchor][1] < points[i][0]) {
                 ++nonOverlap;
                 anchor = i;
             }
-            ++i;
         }
         return nonOverlap;
     }

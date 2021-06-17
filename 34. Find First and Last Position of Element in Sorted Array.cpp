@@ -13,26 +13,23 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        if (nums.empty()) return vector<int>{-1, -1};
-        
-        // find first pos
-        int left = 0, right = nums.size() - 1, mid;
-        while (left + 1 < right) {
-            mid = left + (right - left) / 2;
-            if (nums[mid] >= target) right = mid;
-            else left = mid;
+        if (nums.empty()) return {-1, -1};        
+        // find firstP
+        int l = 0, r = nums.size() - 1;
+        while (l + 1 < r) {
+            int m = l + (r - l) / 2;
+            if (nums[m] < target) l = m;
+            else r = m;
         }
-        int firstPos = (nums[left] == target) ? left : (nums[right] == target) ? right : -1;
-        
-        // find last pos
-        left = 0, right = nums.size() - 1;
-        while (left + 1 < right) {
-            mid = left + (right - left) / 2;
-            if (nums[mid] <= target) left = mid;
-            else right = mid;
+        int firstP = (nums[l] == target) ? l : (nums[r] == target) ? r : -1;
+        // find lastP
+        l = 0, r = nums.size() - 1;
+        while (l + 1 < r) {
+            int m = l + (r - l) / 2;
+            if (nums[m] > target) r = m;
+            else l = m;
         }
-        int secondPos = (nums[right] == target) ? right : (nums[left] == target) ? left : -1;
-        
-        return vector<int>{firstPos, secondPos};
+        int lastP = (nums[r] == target) ? r : (nums[l] == target) ? l : -1;
+        return {firstP, lastP};
     }
 };

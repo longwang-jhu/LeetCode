@@ -19,38 +19,41 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// two dfs fir Pacific and Altantic
 class Solution {
 public:
-    vector<pair<int, int>> dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
     vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
-        int m = heights.size(), n = heights[0].size();
+        m = heights.size(); n = heights[0].size();
         vector<vector<bool>> visitedP(m, vector(n, false));
         vector<vector<bool>> visitedA(m, vector(n, false));
         for (int i = 0; i < m; ++i) {
-            if (!visitedP[i][0]) dfs(heights, visitedP, i, 0);
-            if (!visitedA[i][n-1]) dfs(heights, visitedA, i, n - 1);
+            if (!visitedP[i][0]) dfs(i, 0, heights, visitedP);
+            if (!visitedA[i][n-1]) dfs(i, n - 1, heights, visitedA);
         }
         for (int j = 0; j < n; ++j) {
-            if (!visitedP[0][j]) dfs(heights, visitedP, 0, j);
-            if (!visitedA[m-1][j]) dfs(heights, visitedA, m-1, j);
+            if (!visitedP[0][j]) dfs(0, j, heights, visitedP);
+            if (!visitedA[m-1][j]) dfs(m - 1, j, heights, visitedA);
         }
-        
         vector<vector<int>> ans;
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (visitedP[i][j] and visitedA[i][j]) ans.push_back({i,j});
+                if (visitedP[i][j] && visitedA[i][j]) ans.push_back({i,j});
             }
         }
         return ans;
     }
-    
-    void dfs(const vector<vector<int>> &heights, vector<vector<bool>> &visited, int i, int j) {
+private:
+    int m, n;
+    vector<pair<int, int>> dirs = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+    void dfs(int i, int j, const vector<vector<int>>& heights,
+            vector<vector<bool>>& visited) {
         visited[i][j] = true;
-        for (auto [iIncr, jIncr] : dirs) {
+        for (const auto& [iIncr, jIncr] : dirs) {
             int iNext = i + iIncr, jNext = j + jIncr;
-            if (iNext >= 0 and iNext < heights.size() and jNext >= 0 and jNext < heights[0].size()
-               and !visited[iNext][jNext] and heights[iNext][jNext] >= heights[i][j]) {
-                dfs(heights, visited, iNext, jNext);
+            if (iNext >= 0 && iNext < m && jNext >= 0 and jNext < n
+                && !visited[iNext][jNext]
+                && heights[iNext][jNext] >= heights[i][j]) {
+                dfs(iNext, jNext, heights, visited);
             }
         }
         return;

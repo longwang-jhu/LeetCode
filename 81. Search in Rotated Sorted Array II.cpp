@@ -16,24 +16,22 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// binary search
+// binary search, [1st part | 2nd part]
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
-        int left = 0, right = nums.size() - 1, mid;
-        while (left + 1 < right) {
-            mid = left + (right - left) / 2;
-            
-            if (nums[mid] == target) return true;
-            if (nums[mid] > nums[right]) { // mid is in 1st part
-                if (nums[left] <= target and target < nums[mid]) right = mid;
-                else left = mid;
-            } else if (nums[mid] < nums[right]) { // mid is in 2nd part
-                if (nums[mid] < target and target <= nums[right]) left = mid;
-                else right = mid;
-            } else --right;
+        int l = 0, r = nums.size() - 1;
+        while (l + 1 < r) {
+            int m = l + (r - l) / 2;
+            if (nums[m] == target) return true;
+            if (nums[m] > nums[r]) { // m in 1st part
+                if (nums[l] <= target and target < nums[m]) r = m;
+                else l = m;
+            } else if (nums[m] < nums[r]) { // m in 2nd part
+                if (nums[m] < target and target <= nums[r]) l = m;
+                else r = m;
+            } else --r; // undetermined
         }
-        
-        return nums[left] == target or nums[right] == target;
+        return nums[l] == target or nums[r] == target;
     }
 };

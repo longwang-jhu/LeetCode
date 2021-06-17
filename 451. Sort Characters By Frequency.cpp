@@ -11,17 +11,17 @@ public:
     string frequencySort(string s) {
         // counts[char] = count of char
         unordered_map<char, int> counts;
-        for (char &c : s) ++counts[c];
-        
-        // bucket[count] = chars with that many count
-        vector<vector<char>> bucket(s.size() + 1);
-        for (auto &[c, count] : counts) bucket[count].push_back(c);
-        
-        string ans;
-        for (int count = s.size(); count > 0; --count) {
-            for (char &c : bucket[count]) ans += string(count, c);
+        int maxCount = 0;
+        for (const auto& c : s) {
+            maxCount = max(maxCount, ++counts[c]);
         }
-        
+        // bucket[count] = chars with that many count
+        vector<vector<char>> bucket(maxCount + 1);
+        for (const auto& [c, count] : counts) bucket[count].push_back(c);
+        string ans;
+        for (int i = maxCount; i > 0; --i) {
+            for (const auto& c : bucket[i]) ans += string(i, c);
+        }
         return ans;
     }
 };

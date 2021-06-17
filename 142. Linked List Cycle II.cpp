@@ -12,7 +12,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// slow and fast ptrs
+// slow and fast ptrs, isCycle if slow and fast meet
+// reset slow and return when slow and fast meet again
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -24,17 +25,14 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        if (!head or !head->next) return nullptr;
-                
+        if (!head or !head->next) return nullptr;                
         ListNode *slow = head, *fast = head;
         bool isCycle = false;
         while (fast->next and fast->next->next) {
             slow = slow->next;
             fast = fast->next->next;
-            
             if (slow == fast) {
-                isCycle = true;
-                break;
+                isCycle = true; break;
             }
         }
         

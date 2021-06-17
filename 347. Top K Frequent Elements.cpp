@@ -5,26 +5,25 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// bucket sort
+// bucket sort, buckets[count] = nums of with that many counts
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
         // counts[num] = count of num
         unordered_map<int, int> counts;
         int maxCount;
-        for (int &num : nums) maxCount = max(maxCount, ++counts[num]);
-        
+        for (auto& num : nums) maxCount = max(maxCount, ++counts[num]);
         // buckets[count] = nums of with that many counts
         vector<vector<int>> buckets(maxCount + 1);
-        for (auto &[num, count] : counts) buckets[count].push_back(num);
+        for (auto& [num, count] : counts) buckets[count].push_back(num);
         
         vector<int> ans;
-        for (int i = maxCount; i >= 0 and ans.size() < k; --i) {
-            for (int &num : buckets[i]) {
+        for (int i = maxCount; i >= 0; --i) {
+            for (auto& num : buckets[i]) {
                 ans.push_back(num);
-                if (ans.size() == k) break;
+                if (ans.size() == k) return ans;
             }
         }
-        return ans;
+        return {};
     }
 };

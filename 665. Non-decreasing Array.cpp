@@ -8,23 +8,20 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// greedy
+// greedy, check to modify nums[i-1] or nums[i]
 class Solution {
 public:
     bool checkPossibility(vector<int>& nums) {
-        if (nums.empty() or nums.size() <= 2) return true;
-        
-        bool modified = false;
+        if (nums.empty() || nums.size() <= 2) return true;
+        bool hasModified = false;
         for (int i = 1; i < nums.size(); ++i) {
-            if (nums[i-1] > nums[i]) { // found a violation
-                if (modified) return false;
-                modified = true;
-                
-                if (i == 1 or nums[i-2] <= nums[i]) { // change nums[i-1]
+            if (nums[i] < nums[i-1]) { // found a violation
+                if (hasModified) return false;
+                // modify nums[i-1] or nums[i]
+                if (i == 1 || nums[i-2] <= nums[i]) {
                     nums[i-1] = nums[i];
-                } else { // change nums[i]
-                    nums[i] = nums[i-1];
-                }
+                } else nums[i] = nums[i-1];
+                hasModified = true;
             }
         }
         return true;
